@@ -33,5 +33,5 @@ def thankyou():
 	return render_template("thankyou.html")
 
 
-# app.config["DEBUG"] = True
+app.config["DEBUG"] = True
 app.run(host="0.0.0.0", port=3000)

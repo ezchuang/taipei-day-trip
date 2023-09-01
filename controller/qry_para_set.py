@@ -62,7 +62,7 @@ def mrts_list() -> str:
         "table" : "attractions LEFT JOIN mrts ON attractions.mrt_id = mrts.id",
         "where" : None,
         "group_by" : "mrts.mrt",
-        "order_by" : "mrts.mrt",
+        "order_by" : "count(mrts.mrt)",
         "order_ordered" : "DESC",
         "limit" : "%s",
         "target" : (40,)
