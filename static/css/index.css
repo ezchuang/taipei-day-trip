@@ -49,12 +49,6 @@ body{
 }
 
 /* Color */
-.whiteBg{
-    background: var(--additional-color-white, #FFF);
-}
-.grayBg{
-    background: var(--Gray-700, #757575);
-}
 .grayColor-50{
     color: var(--secondary-color-gray-50, #666);
 }
@@ -63,6 +57,12 @@ body{
 }
 .cyanColor-70{
     color: var(--primary-color-cyan-70, #489);
+}
+.whiteBg{
+    background: var(--additional-color-white, #FFF);
+}
+.grayBg{
+    background: var(--Gray-700, #757575);
 }
 .heroSectionBg{
     background: var(--light-cyan-gradient-135-deg, linear-gradient(135deg, #ADE 0%, #6AB 100%));
@@ -87,6 +87,10 @@ body{
     width: 100%;
     justify-content: center;
     align-items: center;
+    position: sticky;
+    top: 0px;
+    z-index: 10;
+        /* position: -webkit-sticky; */
 }
 @media(max-width: 1200px){
     .nevigation{
@@ -212,7 +216,6 @@ body{
     min-height: 800px;
     flex-direction: column;
     align-items: center;
-    /* justify-content: center; */
     align-self: stretch;
 }
 .listBar{

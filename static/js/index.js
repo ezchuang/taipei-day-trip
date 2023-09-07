@@ -1,5 +1,18 @@
+// 全域變數宣告
 let nextPage = 0
 let keyword = null
+
+// Load More
+let observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting){
+            generateAttractions();
+        }
+    })
+})
+let observerTarget = document.querySelector(".footer")
+// Load More 備案
+// let fetchNow = false
 
 // 網頁轉跳 for div
 function linkToUrl(url){
@@ -14,6 +27,14 @@ function getAttractionsUrl(page=0, keyword=null){
         return res
     }
     return res + `&keyword=${keyword}`
+}
+
+// Load more 監聽
+function createObserver(target){
+    observer.observe(target)
+}
+function removeObserver(target){
+    observer.unobserve(target)
 }
 
 function generateErrorMsg(msg){
@@ -104,12 +125,19 @@ async function generateMrts(){
 
 // 生成 Attractions List
 async function generateAttractions(){
+    // Load More
+    removeObserver(observerTarget)
+    // Load More 備案
+    // fetchNow = true
+
     let tempAttractionsDatas = await fetch(getAttractionsUrl(nextPage, keyword))
     let attractionsDataObj = await tempAttractionsDatas.json()
-    // 終止驗證
+
+    // 異常驗證
     if (Object.hasOwn(attractionsDataObj, "error")){
         if (attractionsDataObj["error"] & nextPage == 0){
-            document.removeEventListener("scrollend", generateAttractions);
+            // Load More 備案
+            // document.removeEventListener("scrollend", generateAttractions);
             generateErrorMsg(attractionsDataObj.message)
             return
         }
@@ -117,11 +145,14 @@ async function generateAttractions(){
 
     let attractionsData = attractionsDataObj.data
     nextPage = attractionsDataObj.nextPage
-
     let attractionsGroup = document.querySelector("#attractionsGroup");
-    if (attractionsData.length < 12){
-        document.removeEventListener("scrollend", generateAttractions);
-    }
+    
+    // Load More 備案
+    // 終止驗證
+    // if (attractionsData.length < 12){
+    //     document.removeEventListener("scrollend", generateAttractions);
+    // }
+
     for (let i=0; i < attractionsData.length; i++){
         // 生成框架
         let attraction = document.createElement("div");
@@ -189,6 +220,16 @@ async function generateAttractions(){
         let textAttractionCat = document.createTextNode(attractionsData[i].category);
         detailCat.appendChild(textAttractionCat);
     }
+
+    // 終止驗證
+    if (attractionsData.length < 12){
+        // Load More 備案
+        // document.removeEventListener("scrollend", generateAttractions);
+        return
+    }
+    createObserver(observerTarget)
+    // Load More 備案
+    // fetchNow = false
 }
 
 // 網頁載入
@@ -200,7 +241,10 @@ document.addEventListener("DOMContentLoaded", async function(){
     generateAttractions();
 })
 
-document.addEventListener("scrollend", generateAttractions)
+// 建立 observe 
+createObserver(observerTarget)
+// Load More 備案
+// document.addEventListener("scrollend", () => {fetchNow ? null : generateAttractions()})
 
 document.querySelector("#searchBtn").addEventListener("click", setKeyword)
 document.querySelector("#arrowLeft").addEventListener("click", arrowLeft)
