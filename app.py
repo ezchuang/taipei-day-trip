@@ -8,7 +8,12 @@ from module import get_connection
 app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
+
 app.json.ensure_ascii = False
+
+# from flask_cors import CORS
+# CORS(app)
+
 
 # get db config
 load_dotenv()
@@ -33,5 +38,6 @@ def thankyou():
 	return render_template("thankyou.html")
 
 
-app.config["DEBUG"] = True
+# app.config["DEBUG"] = True
+# app.run(port=3000)
 app.run(host="0.0.0.0", port=3000)
