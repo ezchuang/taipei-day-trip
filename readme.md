@@ -33,7 +33,7 @@
 
 - 資料操作:
   1. 資料庫登入:
-     - `mysql -u root -p`
+     - `sudo mysql -u root -p`
   2. Python 執行 (記得確認路徑):
      - `sudo python3 app.py`
   3. Python 背景執行 (記得確認路徑):
