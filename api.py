@@ -1,11 +1,11 @@
 from flask import ( Blueprint, request, session, current_app,
-                   request, make_response, jsonify, redirect )
+                   request, jsonify)
 
 import module.flask_modules as flask_modules
 from controller import qry_para_set
 
 
-blueprint = Blueprint('blueprint123', __name__, url_prefix ="/api", static_folder="public", static_url_path="/")
+blueprint = Blueprint('blueprint123', __name__, url_prefix ="/api", static_folder="api", static_url_path="/api")
 
 
 # api 全部都需要驗證
@@ -19,30 +19,43 @@ blueprint = Blueprint('blueprint123', __name__, url_prefix ="/api", static_folde
 #         return jsonify(res), 400
 
 
-# 取得景點列表資料
+# 取得景點列表資料(輸出 12 筆)
 @blueprint.route("/attractions", methods=["GET"])
 def attractions_list():
     try:
         page = int(request.args.get("page"))
         keyword = request.args.get("keyword")
+        
+        # 使用者亂搞
+        if page == None:
+            raise ValueError
 
         command_paras = qry_para_set.attractions_list(page, keyword)
         datas = flask_modules.query_fetch_all(command_paras)
+        # 跟 DB 要 13 筆資料，若資料數小於 12，則此輪為最後一輪
+        if len(datas) < 12:
+            page = None
+        else:
+            page += 1
+            datas.pop()
+
         for data in datas:
             data["images"] = data["images"].split(",")
         res = {
-            "nextPage" : page + 1,
+            "nextPage" : page,
             "data" : datas,
             }
 
+        # 字串搜尋沒資料
         if not res["data"]:
             raise ValueError
+        
         return jsonify(res), 200
     
     except ValueError:
         res = {
             "error": True,
-            "message": "無此資料或頁碼異常"
+            "message": "無此資料"
         }
         return jsonify(res), 400
     

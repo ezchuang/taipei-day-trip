@@ -1,19 +1,23 @@
-import get_connect
-import module
+from module_data import module_db_constructor
+
+def check_db_exist(db_name):
+    construct_paras = {
+        "command" : "SHOW DATABASES",
+        "target" : "website_taipei",
+    }
+    return construct_paras
 
 
 # Create DB
-def create_db_controller(db_connection_pool, db_name) -> bool:
+def create_db_controller(db_name) -> bool:
     construct_paras = {
         "db_name" : f'{db_name}',
         "default" : "CHARACTER SET utf8mb4",
     }
-    if not module.create_db(db_connection_pool, construct_paras):
-        return False
-    return True
+    return construct_paras
 
 
-def create_table_mrts(db_connection_pool) -> bool:
+def create_table_mrts() -> bool:
     construct_paras = {
         "table_name" : "mrts",
         "columns" : {
@@ -21,12 +25,10 @@ def create_table_mrts(db_connection_pool) -> bool:
             "mrt" : "VARCHAR(255)",
         }
     }
-    if not module.create_table(db_connection_pool, construct_paras):
-        return False
-    return True
+    return construct_paras
 
 
-def create_table_cats(db_connection_pool) -> bool:
+def create_table_cats() -> bool:
     construct_paras = {
         "table_name" : "cats",
         "columns" : {
@@ -34,12 +36,10 @@ def create_table_cats(db_connection_pool) -> bool:
             "cat" : "VARCHAR(255)",
         }
     }
-    if not module.create_table(db_connection_pool, construct_paras):
-        return False
-    return True
+    return construct_paras
 
 
-def create_table_attractions(db_connection_pool) -> bool:
+def create_table_attractions() -> bool:
     # rate 能加上下限?
     construct_paras = {
         "table_name" : "attractions",
@@ -57,12 +57,11 @@ def create_table_attractions(db_connection_pool) -> bool:
             "cat_id" : "cats(id)",
         },
     }
-    if not module.create_table(db_connection_pool, construct_paras):
-        return False
-    return True
+    return construct_paras
 
 
-def create_table_files(db_connection_pool) -> bool:
+
+def create_table_files() -> bool:
     construct_paras = {
         "table_name" : "files",
         "columns" : {
@@ -74,12 +73,9 @@ def create_table_files(db_connection_pool) -> bool:
             "attractions_id" : "attractions(id)",
         },
     }
-    if not module.create_table(db_connection_pool, construct_paras):
-        return False
-    return True
+    return construct_paras
 
-
-def create_table_locs(db_connection_pool) -> bool:
+def create_table_locs() -> bool:
     construct_paras = {
         "table_name" : "locs",
         "columns" : {
@@ -95,12 +91,10 @@ def create_table_locs(db_connection_pool) -> bool:
             "attractions_id" : "attractions(id)",
         },
     }
-    if not module.create_table(db_connection_pool, construct_paras):
-        return False
-    return True
+    return construct_paras
 
 
-def create_table_weird_data(db_connection_pool) -> bool:
+def create_table_weird_data() -> bool:
     construct_paras = {
         "table_name" : "weird_data",
         "columns" : {
@@ -119,12 +113,10 @@ def create_table_weird_data(db_connection_pool) -> bool:
             "attractions_id" : "attractions(id)",
         },
     }
-    if not module.create_table(db_connection_pool, construct_paras):
-        return False
-    return True
+    return construct_paras
 
 
-def create_table_auth(db_connection_pool) -> bool:
+def create_table_auth() -> bool:
     construct_paras = {
         "table_name" : "auth",
         "columns" : {
@@ -135,36 +127,4 @@ def create_table_auth(db_connection_pool) -> bool:
             "email" : "VARCHAR(255) NOT NULL",
         },
     }
-    if not module.create_table(db_connection_pool, construct_paras):
-        return False
-    return True
-
-
-# Create_Table
-# 之後改成 for loop 於開始前驗證個別是否存在
-def create_table_controller(db_connection_pool):
-    create_table_mrts(db_connection_pool)
-    create_table_cats(db_connection_pool)
-
-    # need FK to mrt & cat
-    create_table_attractions(db_connection_pool)
-
-    # need FK to attractions & idpt
-    create_table_files(db_connection_pool)
-    create_table_locs(db_connection_pool)
-    create_table_weird_data(db_connection_pool)
-
-    # 註冊用
-    create_table_auth(db_connection_pool)
-
-
-
-if __name__ == "__main__":
-    db_connection_pool = get_connect.create_pool()
-    db_name = "website_taipei"
-    if not module.check_db_exist(db_connection_pool, db_name):
-        create_db_controller(db_connection_pool, db_name)
-    db_connection_pool.set_config(database=db_name)
-    create_table_controller(db_connection_pool)
-
-
+    return construct_paras

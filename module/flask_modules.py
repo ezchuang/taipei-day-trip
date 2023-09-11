@@ -1,10 +1,4 @@
-from api import blueprint
 from module import get_connection
-
-
-# 註冊藍圖
-def register_blue(app):
-    app.register_blueprint(blueprint)
 
 
 # decorator of CRUD
@@ -96,7 +90,6 @@ def query_create(db_connection, db_cursor, command, target) -> bool:
 def query_fetch_one(db_connection, db_cursor, command, target) -> dict:
     db_cursor.execute(command, target)
     return db_cursor.fetchone()
-
 
 
 # R_fetch_all
