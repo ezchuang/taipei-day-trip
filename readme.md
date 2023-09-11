@@ -25,9 +25,11 @@
 ## 資料操作
 - 資料庫初始化:
   1. 執行資料庫建立: 
-      - `sudo python3 /init_program/db_constructor.py`
-  2. 資料匯入: 
-      - `sudo python3 /data/data_washer.py`
+      - `sudo python3 /data/db_init_program/db_init_program.py`
+  2. 執行資料庫建立: 
+      - `Y/N`
+  3. 資料匯入: 
+      - `Y/N`
 
 - 資料操作:
   1. 資料庫登入:

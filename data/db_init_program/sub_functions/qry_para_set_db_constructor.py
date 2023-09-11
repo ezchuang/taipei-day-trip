@@ -1,5 +1,3 @@
-from module_data import module_db_constructor
-
 def check_db_exist(db_name):
     construct_paras = {
         "command" : "SHOW DATABASES",

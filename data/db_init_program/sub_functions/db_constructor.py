@@ -1,6 +1,6 @@
 from module_data import get_connect
-import qry_para_set_db_constructor
 from module_data import module_init_program
+import qry_para_set_db_constructor
 
 
 # Create_Table
