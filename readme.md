@@ -24,7 +24,7 @@
 
 ## 資料操作
 - 資料庫初始化:
-  1. 執行資料庫建立: 
+  1. 執行資料庫建立 & 資料匯入腳本: 
       - `sudo python3 /data/db_init_program/db_init_program.py`
   2. 執行資料庫建立: 
       - `Y/N`
