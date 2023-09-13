@@ -21,6 +21,7 @@ def create_table_mrts() -> bool:
         "columns" : {
             "id" : "BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT",
             "mrt" : "VARCHAR(255)",
+            "INDEX" : "mrt_index (mrt)",
         }
     }
     return construct_paras
@@ -32,6 +33,7 @@ def create_table_cats() -> bool:
         "columns" : {
             "id" : "BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT",
             "cat" : "VARCHAR(255)",
+            "INDEX" : "cat_index (cat)",
         }
     }
     return construct_paras
@@ -66,6 +68,7 @@ def create_table_files() -> bool:
             "id" : "BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT",
             "attractions_id" : "BIGINT UNSIGNED NOT NULL",
             "file_url" : "VARCHAR(255) NOT NULL",
+            "INDEX" : "attraction_id_index (attractions_id)",
         },
         "foreign_key" : {
             "attractions_id" : "attractions(id)",
@@ -123,6 +126,7 @@ def create_table_auth() -> bool:
             "password" : "VARCHAR(255) NOT NULL",
             "name" : "VARCHAR(255) NOT NULL",
             "email" : "VARCHAR(255) NOT NULL",
+            "INDEX" : "username_index (username)",
         },
     }
     return construct_paras
