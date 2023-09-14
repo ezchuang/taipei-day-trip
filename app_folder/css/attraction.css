@@ -1,6 +1,6 @@
 /* Default */
 body{
-    font-family: Noto Sans TC ,sans-serif;
+    font-family: Noto Sans TC, sans-serif;
     font-size: 16px;
     font-style: normal;
     line-height: 13.3px;
@@ -165,7 +165,7 @@ hr{
         width: 90%;
     }
 }
-@media(max-width: 600px){
+@media(max-width: 800px){
     .main{
         width: 100%;
     }
@@ -174,7 +174,7 @@ hr{
     display: flex;
     width: 100%;
 }
-@media(max-width: 600px){
+@media(max-width: 800px){
     .section{
         flex-direction: column;
     }
@@ -185,6 +185,11 @@ hr{
     height: 400px;
     min-width: calc(50% - 60px);
     margin: 15px;
+}
+@media(max-width: 800px){
+    .imgFrame{
+        margin: 0px;
+    }
 }
 .imgInsertTarget{
     overflow: hidden;
@@ -201,9 +206,15 @@ hr{
 .imgContainer{
     object-fit: cover;
     object-position: center;
-    height: 100%;
+    min-height: 100%;
+    border-radius: 5px;
     width: 0%;
     display: none;
+}
+@media(max-width: 800px){
+    .imgContainer{
+        border-radius: 0px;
+    }
 }
 .leftContainer{
     position: absolute;
@@ -263,7 +274,9 @@ hr{
     bottom: 0px;
     /* left: 50%; */
     /* transform: translate(-50%, 0%); */
+    width: 100%;
     display: flex;
+    justify-content: center;
     gap: 5px;
     margin: 10px;
     height: 12px;
@@ -289,6 +302,12 @@ hr{
     flex-direction: column;
     flex:auto;
 }
+@media(max-width: 800px){
+    .profile{
+        height: auto;
+        margin: 20px 10px 40px 10px;
+    }
+}
 .profileTitle{
     display: flex;
     align-items: center;
@@ -307,8 +326,13 @@ hr{
     display: flex;
     flex-direction: column;
     border-radius: 5px;
-    flex:auto;
+    flex: auto;
     margin-bottom: 8px;
+}
+@media(max-width: 800px){
+    .profileBookingFrame{
+        flex: 0 0 0;
+    }
 }
 .bookingTitle{
     display: flex;
@@ -343,10 +367,10 @@ hr{
     height: 22px;
     margin: 0px 4px 0px 5px;
     border-radius: 50%;
-    border: 0px solid #fff;
-
-    /* fancy setting */
-    transition: 0.2s all linear;
+    border: 2px solid #fff;
+    background-color: #FFF;
+    accent-color: #448899;
+    appearance: none;
 }
 .bookingTimeInput:checked{
     background-color: #489;
@@ -375,6 +399,11 @@ hr{
     flex-direction: column;
     margin: 40px 0px 40px 0px;
     line-height: 23px;
+}
+@media(max-width: 800px){
+    .profileBookingFrame{
+        margin: 50px 0px 40px 0px;
+    }
 }
 .infosDescription{
     margin: 10px;
@@ -410,6 +439,7 @@ hr{
 .infosTraffic{
     display: flex;
     align-items: center;
+    margin-bottom: 100px;
 }
 
 /* Footer */

@@ -114,11 +114,16 @@ async function insertElement(currentId){
         imgButton.classList.add("imgButtonWhite")
         imgButton.setAttribute("id", `imgButton${String(i)}`)
     }
-    for (let i = -1; i < 2; i++){ // 3 個
-        img = document.querySelector(`#img${i}`)
-        img.style.width = `100%`
-        img.style.display = "block"
-    }
+
+    img0 = document.querySelector(`#img${0}`)
+    img0.style.width = `100%`
+    img0.style.display = "block"
+
+    // for (let i = -1; i < 2; i++){ // 3 個
+    //     img = document.querySelector(`#img${i}`)
+    //     img.style.width = `100%`
+    //     img.style.display = "block"
+    // }
 
     previousImgNum = -1
     currentImgNum = 0
@@ -133,12 +138,26 @@ async function moveImg(disappear, current, next, expand){
     let containerWidth = container.offsetWidth
     let spec = 40 // 縮小刻度
 
+
+    // 測試
+    let nextImg = document.querySelector(`#img${String(next)}`)
+    
+    
     let disappearImg = document.querySelector(`#img${String(disappear)}`)
     let expandImg = document.querySelector(`#img${String(expand)}`)
     
     let widthChanged = containerWidth/spec
     let disappearImgWidth = containerWidth
     let expandImgWidth = 0
+
+
+    // 測試
+    nextImg.style.width = `100%`
+    nextImg.style.display = "block"
+    expandImg.style.width = `100%`
+    expandImg.style.display = "block"
+
+
     expandImg.style.width = `${expandImgWidth}px`
     expandImg.style.display = "block"
 
@@ -157,13 +176,14 @@ async function moveImg(disappear, current, next, expand){
 }
 
 
-// 
+// 圖片位置校正
 function switchImg(previous, current, next){
     let indexArr = [previous, current, next]
     if (0 <= indexArr[1] && indexArr[1] <= imgAmount - 1){
-        indexArr.forEach((index) => {
+        [indexArr[0], indexArr[2]].forEach((index) => {
             img = document.querySelector(`#img${index}`)
-            img.style.width = `100%`
+            img.style.width = `0%`
+            img.style.display = "none"
         })
         return indexArr
     }
@@ -174,6 +194,7 @@ function switchImg(previous, current, next){
         img.style.width = `0%`
         img.style.display = "none"
     })
+
     // 轉址
     // console.log("超界處理前",indexArr)
     if (indexArr[1] < 0){ // 往左超界
@@ -188,11 +209,12 @@ function switchImg(previous, current, next){
     // console.log("超界", indexArr)
     
     // 重新給予寬度
-    indexArr.forEach((index) => {
+    [indexArr[1]].forEach((index) => {
         img = document.querySelector(`#img${index}`)
         img.style.width = `100%`
         img.style.display = "block"
     })
+
     return indexArr
 }
 
@@ -222,6 +244,7 @@ function showPrice(){
 }
 
 
+// 監聽事件
 document.addEventListener("DOMContentLoaded", () => {
     let currentId = getID()
     insertElement(currentId)
