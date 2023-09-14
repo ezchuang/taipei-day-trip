@@ -1,8 +1,9 @@
 // 宣告全域變數
-let  = null // 上一個圖片編號
+let previousImgNum = null // 上一個圖片編號
 let currentImgNum = null // 目前圖片編號
 let nextImgNum = null // 下一個圖片編號
 let imgAmount = null // 共幾張圖
+// let switchingFlag = false // 是否切換中 <- 為什麼加了這個就異常?
 
 
 // 抓網址 ID
@@ -19,6 +20,12 @@ function sleep(time){
 }
 
 
+// 網頁轉跳 for div
+function linkToUrl(url){
+    window.location.href = url;
+}
+
+
 // 小圓點校正
 function switchButton(){
     let buttonArr = document.querySelectorAll(".imgButtonBlack")
@@ -29,6 +36,12 @@ function switchButton(){
     let currentButton = document.querySelector(`#imgButton${currentImgNum}`)
     currentButton.classList.remove("imgButtonWhite")
     currentButton.classList.add("imgButtonBlack")
+}
+
+
+function changePlaceholderOfDate(){
+    let placeholder = document.querySelector(".bookingDateInput")
+    placeholder.setAttribute("placeholder", "yyyy/mm/dd")
 }
 
 
@@ -136,7 +149,7 @@ async function insertElement(currentId){
 async function moveImg(disappear, current, next, expand){
     let container =  document.querySelector("#imgInsertTarget")
     let containerWidth = container.offsetWidth
-    let spec = 40 // 縮小刻度
+    let spec = 60 // 縮小刻度
 
 
     // 測試
@@ -150,14 +163,10 @@ async function moveImg(disappear, current, next, expand){
     let disappearImgWidth = containerWidth
     let expandImgWidth = 0
 
-
-    // 測試
     nextImg.style.width = `100%`
+    disappearImg.style.width = `100%`
     nextImg.style.display = "block"
-    expandImg.style.width = `100%`
-    expandImg.style.display = "block"
-
-
+    disappearImg.style.display = "block"
     expandImg.style.width = `${expandImgWidth}px`
     expandImg.style.display = "block"
 
@@ -168,7 +177,7 @@ async function moveImg(disappear, current, next, expand){
         expandImgWidth += widthChanged
         expandImg.style.width = `${expandImgWidth}px`
 
-        await sleep(5)
+        await sleep(3)
     }
     disappearImg.style.display = "none"
 
@@ -221,15 +230,25 @@ function switchImg(previous, current, next){
 
 // MrtList 左鍵行為
 async function arrowLeft(){
+    // if (switchingFlag){
+    //     return 
+    // }
+    // switchingFlag = true
     [nextImgNum, currentImgNum, previousImgNum] = await moveImg(nextImgNum, currentImgNum, previousImgNum, previousImgNum - 1);
     [nextImgNum, currentImgNum, previousImgNum] = switchImg(nextImgNum, currentImgNum, previousImgNum, previousImgNum - 1);
     switchButton()
+    // switchingFlag = false
 }
 // MrtList 右鍵行為
 async function arrowRight(){
+    // if (switchingFlag){
+    //     return 
+    // }
+    // switchingFlag = true
     [previousImgNum, currentImgNum, nextImgNum] = await moveImg(previousImgNum, currentImgNum, nextImgNum, nextImgNum + 1);
     [previousImgNum, currentImgNum, nextImgNum] = switchImg(previousImgNum, currentImgNum, nextImgNum, nextImgNum + 1);
-    switchButton()
+    await switchButton()
+    // switchingFlag = false
 }
 
 
@@ -248,6 +267,7 @@ function showPrice(){
 document.addEventListener("DOMContentLoaded", () => {
     let currentId = getID()
     insertElement(currentId)
+    changePlaceholderOfDate()
 })
 document.querySelector("#arrowLeft").addEventListener("click", arrowLeft)
 document.querySelector("#arrowRight").addEventListener("click", arrowRight)

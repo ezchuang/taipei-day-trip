@@ -16,7 +16,7 @@ body{
 hr{
     border: solid #E8E8E8 0.5px;
     margin: 0px;
-    width: 100%;
+    width: calc(100% - 1px);
 }
 
 /* Font */
@@ -173,6 +173,7 @@ hr{
 .section{
     display: flex;
     width: 100%;
+    margin-bottom: 40px;
 }
 @media(max-width: 800px){
     .section{
@@ -277,9 +278,9 @@ hr{
     width: 100%;
     display: flex;
     justify-content: center;
-    gap: 5px;
-    margin: 10px;
-    height: 12px;
+    gap: 12px;
+    height: 14px;
+    margin-bottom: 10px;
 }
 .imgButtonBlack{
     border-radius: 50%;
@@ -305,7 +306,7 @@ hr{
 @media(max-width: 800px){
     .profile{
         height: auto;
-        margin: 20px 10px 40px 10px;
+        margin: 20px 10px 0px 10px;
     }
 }
 .profileTitle{
@@ -354,6 +355,46 @@ hr{
     align-items: center;
     gap: 5px;
 }
+.bookingDateInput{
+    height: 35px;
+    width: 193px;
+    border: 0px;
+
+    font-size: 16px;
+    line-height: 16px;
+
+    background: #FFF url('/static/images/calendar.png') right / 24px 24px no-repeat;
+    background-position: right 10px top 6px;
+}
+/* .bookingDateInput::placeholder{
+    content: attr(placeholder)
+}
+.bookingDateInput::before{
+    content: attr(placeholder)
+}
+.bookingDateInput::content{
+    content: attr(placeholder)
+} */
+/* .bookingDateInput:blank{ */
+    /* color: lightgrey; */
+    /* content: attr(placeholder) !important; */
+    /* margin-right: 0.5em; */
+/* } */
+
+/* 酷東西 */
+/* .bookingDateInput:not(.has-value):before{
+    content: attr(placeholder);
+} */
+input[type="date"]:placeholder-shown::content{
+    content: attr(placeholder);
+}
+.bookingDateInput::-webkit-calendar-picker-indicator{
+    opacity: 0;
+}
+/* 待測 */
+.bookingDateInput::-moz-calendar-picker-indicator{
+    opacity: 0;
+}
 .bookingTimeFrame{
     display: flex;
     align-items: center;
@@ -369,7 +410,7 @@ hr{
     border-radius: 50%;
     border: 2px solid #fff;
     background-color: #FFF;
-    accent-color: #448899;
+        /* accent-color: #448899; */
     appearance: none;
 }
 .bookingTimeInput:checked{
@@ -402,7 +443,7 @@ hr{
 }
 @media(max-width: 800px){
     .profileBookingFrame{
-        margin: 50px 0px 40px 0px;
+        margin: 40px 0px 40px 0px;
     }
 }
 .infosDescription{
