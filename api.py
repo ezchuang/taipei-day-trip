@@ -5,7 +5,9 @@ import module.flask_modules as flask_modules
 from controller import qry_para_set
 
 
-blueprint = Blueprint('blueprint123', __name__, url_prefix ="/api", static_folder="api", static_url_path="/api")
+# blueprint = Blueprint('blueprint123', __name__, url_prefix ="/api", static_folder="api", static_url_path="/api")
+blueprint = Blueprint('blueprint123', __name__, url_prefix ="/api")
+blueprint.static_folder = "api"
 
 
 # api 全部都需要驗證
@@ -32,8 +34,8 @@ def attractions_list():
 
         command_paras = qry_para_set.attractions_list(page, keyword)
         datas = flask_modules.query_fetch_all(command_paras)
-        # 跟 DB 要 13 筆資料，若資料數小於 12，則此輪為最後一輪
-        if len(datas) < 12:
+        # 跟 DB 要 13 筆資料，若資料數小於等於 12，則此輪為最後一輪
+        if len(datas) <= 12:
             page = None
         else:
             page += 1
@@ -68,7 +70,7 @@ def attractions_list():
 
 
 # 根據景點編號取得景點資料
-@blueprint.route("/attractions/<int:attractionId>", methods=["GET"])
+@blueprint.route("/attraction/<int:attractionId>", methods=["GET"])
 def attractions_one(attractionId):
     try:
         command_paras = qry_para_set.attractions_one(attractionId)

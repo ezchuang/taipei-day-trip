@@ -232,7 +232,7 @@ async function generateAttractionsController(){
     }
 
     // 終止驗證，不讓 observerTarget 重新被 observe
-    if (attractionsData.length < 12 || nextPage == null){
+    if (nextPage == null || attractionsData.length < 12){
         return
     }
 

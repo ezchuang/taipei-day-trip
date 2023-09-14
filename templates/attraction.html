@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">
+        <title>attraction</title>
+        <link rel="stylesheet" type="text/css" href="/static/css/cssreset.css"/>
+        <link rel="stylesheet" type="text/css" href="/static/css/attraction.css"/>
+    </head>
+    <body>
+        <div class="nevigation whiteBg">
+            <div class="divNevigation">
+                <div class="h2 bold cyanColor-70 pointer" onclick="linkToUrl('/')">台北一日遊</div>
+                <div class="frame1">
+                    <div class="forNavigation">
+                        <div class="bold grayColor-70 pointer" onclick="linkToUrl('/')">預定行程</div>
+                    </div>
+                    <div class="forNavigation">
+                        <div class="bold grayColor-70 pointer" onclick="linkToUrl('/')">登入/註冊</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr/>
+        <div class="mainFrame">
+            <div class="main">
+                <div class="section">
+                    <div class="imgFrame" id="imgFrame">
+                        <div class="imgInsertTarget" id="imgInsertTarget">
+                        </div>
+                        <div class="leftContainer">
+                            <div class="button arrowLeft pointer" id="arrowLeft">
+                                <div class="ArrowLeft"></div>
+                            </div>
+                        </div>
+                        <div class="rightContainer">
+                            <div class="button arrowRight pointer" id="arrowRight">
+                                <div class="ArrowRight"></div>
+                            </div>
+                        </div>
+                        <div class="imgPositionCircleButton" id="imgPositionCircleButton">
+                        </div>
+                    </div>
+                    <div class="profile">
+                        <div class="profileTitle h3 bold" id="profileTitle"></div>
+                        <div class="profileDescription" id="profileDescription"></div>
+                        <div class="profileBookingFrame lightgrayBg">
+                            <div class="bookingTitle bold grayColor-70">訂購導覽行程</div>
+                            <div class="bookingDescription grayColor-70">以此景點為中心的一日行程，帶您探索城市角落故事</div>
+                            <form class="bookingForm" action="/attractions/1" method="get">
+                                <fieldset class="bookingDateFrame">
+                                    <label class="itemNamebold bold">選擇日期:</label>
+                                    <input class="bookingDateInput" type="date" name="bookingDate">
+                                </fieldset>
+                                <fieldset class="bookingTimeFrame">
+                                    <label class="itemName bold">選擇時間:</label>
+                                    <div class="flexCenter">
+                                        <input class="bookingTimeInput" type="radio" name="bookingTime" value="2000">
+                                        <label class="bookingTimeText">上半天</label>
+                                    </div>
+                                    <div class="flexCenter">
+                                        <input class="bookingTimeInput" type="radio" name="bookingTime" value="2500">
+                                        <label class="bookingTimeText">下半天</label>
+                                    </div>
+                                </fieldset>
+                                <div class="bookingPriceFrame bold">
+                                    <div class="bookingPrice">導覽費用:</div>
+                                    <div class="bookingPriceInput">新台幣 0 元</div>
+                                </div>
+                                <div class="bookingButton button cyanBg whiteColor pointer">開始預約行程</div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <hr/>
+                <div class="infos">
+                    <div class="infosDescription" id="infosDescription"></div>
+                    <div class="infosAddressFrame">
+                        <div class="infosAddressTitle bold">景點地址:</div>
+                        <div class="infosAddress" id="infosAddress"></div>
+                    </div>
+                    <div class="infosTrafficFrame">
+                        <div class="infosTrafficTitle bold">交通方式:</div>
+                        <div class="infosTraffic" id="infosTraffic"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer grayBg">
+            <div class="footerTextFrame">
+                <div class="bold whiteColor">
+                    COPYRIGHT © 2021 台北一日遊
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="/static/js/attraction.js"></script>
+</html>

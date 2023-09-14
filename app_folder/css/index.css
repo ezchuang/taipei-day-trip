@@ -363,7 +363,12 @@ body{
     height: 100%;
     object-fit: cover;
     position: absolute;
+    align-items: center;
 }
+/* .attractionImg:hover{
+    height: 110%;
+    z-index: 0;
+} */
 .detailNameFrame{
     width: 100%;
     height: 40px;
