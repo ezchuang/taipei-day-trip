@@ -2,7 +2,7 @@ import json
 
 from sub_functions.module_data import get_connect
 from sub_functions.module_data import module_init_program
-import qry_para_set_data_washer
+from sub_functions import qry_para_set_data_washer
 
 
 # controller
