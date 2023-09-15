@@ -4,19 +4,19 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <meta charset="utf-8"/>
         <title>index</title>
-        <link rel="stylesheet" type="text/css" href="/static/css/cssreset.css">
+        <link rel="stylesheet" type="text/css" href="/static/css/cssreset.css"/>
         <link rel="stylesheet" type="text/css" href="/static/css/index.css"/>
     </head>
     <body>
         <div class="nevigation whiteBg">
             <div class="divNevigation">
-                <div class="h2 bold cyanColor-70">台北一日遊</div>
+                <div class="h2 bold cyanColor-70 pointer" onclick="linkToUrl('/')">台北一日遊</div>
                 <div class="frame1">
                     <div class="forNavigation">
-                        <div class="bold grayColor-70">預定行程</div>
+                        <div class="bold grayColor-70 pointer" onclick="linkToUrl('/')">預定行程</div>
                     </div>
                     <div class="forNavigation">
-                        <div class="bold grayColor-70">登入/註冊</div>
+                        <div class="bold grayColor-70 pointer" onclick="linkToUrl('/')">登入/註冊</div>
                     </div>
                 </div>
             </div>
@@ -31,7 +31,7 @@
                             <div class="searchBar">
                                 <input type="text" class="searchInput" id="searchInput" placeholder="輸入景點名稱查詢"/>
                                 <div class="searchBtn searchBtnBg" id="searchBtn">
-                                    <div class="searchIcon searchIconBg"></div>
+                                    <div class="searchIcon searchIconBg pointer"></div>
                                 </div>
                             </div>
                         </div>
@@ -43,7 +43,7 @@
             <div class="main">
                 <div class="listBar">
                     <div class="leftContainer">
-                        <div class="button arrowLeft" id="arrowLeft">
+                        <div class="button arrowLeft pointer" id="arrowLeft">
                             <div class="ArrowLeft"></div>
                         </div>
                     </div>
@@ -52,7 +52,7 @@
                         </div>
                     </div>
                     <div class="rightContainer">
-                        <div class="button arrowRight" id="arrowRight">
+                        <div class="button arrowRight pointer" id="arrowRight">
                             <div class="ArrowRight"></div>
                         </div>
                     </div>

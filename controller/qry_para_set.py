@@ -1,4 +1,3 @@
-
 def attractions_list(page:int, keyword:str) -> str:
     command_paras = {
         "columns" : "attractions.id, \
@@ -20,7 +19,7 @@ def attractions_list(page:int, keyword:str) -> str:
         "order_by" : None,
         "order_ordered" : None,
         "limit" : "%s, %s",
-        "target" : (page*12, 12)
+        "target" : (page*12, 13)
     }
 
     if not keyword:

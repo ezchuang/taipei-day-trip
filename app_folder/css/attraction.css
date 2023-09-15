@@ -1,0 +1,509 @@
+/* Default */
+body{
+    font-family: Noto Sans TC, sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    line-height: 13.3px;
+    color: #666;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    background: #FFF;
+    margin: 0px;
+}
+hr{
+    /* border: solid #E8E8E8 1px; */
+    background-color: #E8E8E8;
+    border: 0px;
+    height: 1px;
+    margin: 0px;
+    width: calc(100% - 1px);
+}
+
+/* Font */
+.h1{
+    font-size: 28px;
+    line-height: 24px;
+}
+.h2{
+    font-size: 30px;
+    line-height: 34px;
+}
+.h3{
+    font-size: 24px;
+    line-height: 24px;
+}
+.button{
+    font-size: 19px;
+    line-height: 16px;
+}
+/* content{
+    font-size: 16px;
+    line-height: normal;
+} */
+/* list{
+    font-size: 14px;
+    line-height: normal;
+} */
+.bold{
+    font-weight: 700;
+}
+.medium{
+    font-weight: 500;
+}
+.regular{
+    font-weight: 400;
+}
+
+/* Color */
+.whiteColor{
+    color: var(--additional-color-white, #FFF);
+}
+.grayColor-50{
+    color: var(--secondary-color-gray-50, #666);
+}
+.grayColor-70{
+    color: var(--secondary-color-gray-70, #666);
+}
+.cyanColor-70{
+    color: var(--primary-color-cyan-70, #489);
+}
+.whiteBg{
+    background: var(--additional-color-white, #FFF);
+}
+.lightgrayBg{
+    background: var(--Gray-700, #E8E8E8);
+}
+.grayBg{
+    background: var(--Gray-700, #757575);
+}
+.blackBg{
+    background: var(--additional-color-white, #000);
+}
+.heroSectionBg{
+    background: var(--light-cyan-gradient-135-deg, linear-gradient(135deg, #ADE 0%, #6AB 100%));
+}
+.welcomeBg {
+    background: lightgray url("/static/images/welcome image.png") left top / cover no-repeat;
+}
+.cyanBg{
+    background: var(--primary-color-cyan-70, #489);
+}
+.searchIconBg{
+    background: url("/static/images/Search.png") 50% 50% / contain no-repeat;
+}
+
+/* function */
+.pointer{
+    cursor: pointer;
+}
+.flexCenter{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Nav */
+.nevigation{
+    display: flex;
+    height: 54px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    position: sticky;
+    top: 0px;
+    z-index: 10;
+        /* position: -webkit-sticky; */
+}
+@media(max-width: 1200px){
+    .nevigation{
+        width: calc(100% - 10px);
+        margin: 0px 0px 0px 10px;
+    }
+}
+.divNevigation{
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    justify-content: space-between;
+    align-items: center;
+}
+.textNevigation{
+    justify-content: center;
+    align-items: center;
+}
+.frame1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.forNavigation{
+    display: flex;
+    height: 14px;
+    padding: 10px;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+/* Main */
+.mainFrame{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+.main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    min-height: calc(100vh - 478px - 80px);
+}
+@media(max-width: 1200px){
+    .main{
+        width: 90%;
+    }
+}
+@media(max-width: 800px){
+    .main{
+        width: 100%;
+    }
+}
+.section{
+    display: flex;
+    width: 100%;
+    margin-bottom: 40px;
+}
+@media(max-width: 800px){
+    .section{
+        flex-direction: column;
+    }
+}
+.imgFrame{
+    display: flex;
+    position: relative;
+    height: 400px;
+    min-width: calc(50% - 60px);
+    margin: 15px;
+}
+@media(max-width: 800px){
+    .imgFrame{
+        margin: 0px;
+    }
+}
+.imgInsertTarget{
+    overflow: hidden;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    top: 0px;
+    left: 0px;
+    flex: auto;
+}
+.imgContainer{
+    object-fit: cover;
+    object-position: center;
+    min-height: 100%;
+    border-radius: 5px;
+    width: 0%;
+    display: none;
+}
+@media(max-width: 800px){
+    .imgContainer{
+        border-radius: 0px;
+    }
+}
+.leftContainer{
+    position: absolute;
+    left: 0px;
+    top: 50%;
+    transform: translate(0%, -50%);
+    display: flex;
+    padding: 10px;
+    align-items: flex-start;
+    opacity: 0.6;
+}
+.leftContainer:hover{
+    opacity: 1;
+}
+.arrowLeft{
+    display: flex;
+    width: 32px;
+    height: 32px;
+    justify-content: center;
+    align-items: center;
+}
+.ArrowLeft{
+    width: 32px;
+    height: 32px;
+    background: url("/static/images/Arrow Left.png") 50% / contain no-repeat;
+}
+.rightContainer{
+    display: flex;
+    padding: 10px;
+    align-items: flex-start;
+    opacity: 0.6;
+    position: absolute;
+    right: 0px;
+    top: 50%;
+    transform: translate(0%, -50%);
+}
+.rightContainer:hover{
+    opacity: 1;
+}
+.arrowRight{
+    display: flex;
+    width: 32px;
+    height: 32px;
+    justify-content: center;
+    align-items: center;
+}
+.ArrowRight{
+    width: 32px;
+    height: 32px;
+    background:  url("/static/images/Arrow Right.png") 50% / contain no-repeat;
+}
+.imgPositionCircleButton{
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    height: 14px;
+    margin-bottom: 10px;
+}
+.imgButtonBlack{
+    border-radius: 50%;
+    border: solid 1px white ;
+    background-color: black;
+    height: 12px;
+    width: 12px;
+}
+.imgButtonWhite{
+    border-radius: 50%;
+    border: solid 1px white ;
+    background-color: white;
+    height: 12px;
+    width: 12px;
+}
+.profile{
+    margin: 15px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    flex:auto;
+}
+@media(max-width: 800px){
+    .profile{
+        height: auto;
+        margin: 20px 10px 0px 10px;
+    }
+}
+.profileTitle{
+    display: flex;
+    align-items: center;
+    height: 33px;
+    margin-bottom: 15px;
+}
+.profileDescription{
+    display: flex;
+    align-items: center;
+    height: 22px;
+    margin-bottom: 20px;
+}
+.profileBookingFrame{
+    gap: 15px;
+    padding: 15px 20px 15px 20px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    flex: auto;
+    margin-bottom: 8px;
+}
+@media(max-width: 800px){
+    .profileBookingFrame{
+        flex: 0 0 0;
+    }
+}
+.bookingTitle{
+    display: flex;
+    align-items: center;
+    line-height: 24px;
+}
+.bookingDescription{
+    display: flex;
+    align-items: center;
+    line-height: 23px;
+}
+.bookingForm{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.bookingDateFrame{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.bookingDateInput{
+    height: 35px;
+    width: 193px;
+    border: 0px;
+
+    font-size: 16px;
+    line-height: 16px;
+
+    background: #FFF url('/static/images/calendar.png') right / 24px 24px no-repeat;
+    background-position: right 10px top 6px;
+    padding: 0px 10px 0px 10px;
+}
+/* .bookingDateInput::placeholder{
+    content: attr(placeholder)
+} */
+/* .bookingDateInput::before{
+    margin: 10px;
+} */
+/* .bookingDateInput::content{
+    content: attr(placeholder)
+} */
+/* .bookingDateInput:blank{ */
+    /* color: lightgrey; */
+    /* content: attr(placeholder) !important; */
+    /* margin-right: 0.5em; */
+/* } */
+
+/* 酷東西 */
+/* .bookingDateInput:not(.has-value):before{
+    content: attr(placeholder);
+} */
+input[type="date"]:placeholder-shown::content{
+    content: attr(placeholder);
+}
+.bookingDateInput::-webkit-calendar-picker-indicator{
+    opacity: 0;
+}
+/* 待測 */
+.bookingDateInput::-moz-calendar-picker-indicator{
+    opacity: 0;
+}
+.bookingTimeFrame{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+/* 
+顏色異常待修正
+*/
+.bookingTimeInput{
+    width: 22px;
+    height: 22px;
+    margin: 0px 4px 0px 5px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    background-color: #FFF;
+        /* accent-color: #448899; */
+    appearance: none;
+}
+.bookingTimeInput:checked{
+    background-color: #489;
+}
+.bookingTimeText{
+    margin: 0px 8px 0px 0px;
+}
+.bookingPriceFrame{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+.bookingButton{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    width: 154px;
+    height: 36px;
+    border-radius: 5px;
+}
+
+/* infos */
+.infos{
+    display: flex;
+    flex-direction: column;
+    margin: 40px 0px 40px 0px;
+    line-height: 23px;
+}
+@media(max-width: 800px){
+    .profileBookingFrame{
+        margin: 0px 0px 40px 0px;
+    }
+}
+.infosDescription{
+    margin: 10px;
+    width: calc(100% - 20px);
+    display: flex;
+    align-items: center;
+}
+.infosAddressFrame{
+    margin: 10px;
+    width: calc(100% - 20px);
+    justify-content: center;
+}
+.infosAddressTitle{
+    height: 32px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+.infosAddress{
+    display: flex;
+    align-items: center;
+}
+.infosTrafficFrame{
+    margin: 10px;
+    width: calc(100% - 20px);
+}
+.infosTrafficTitle{
+    height: 32px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+.infosTraffic{
+    display: flex;
+    align-items: center;
+    margin-bottom: 100px;
+}
+
+/* Footer */
+.footer{
+    display: flex;
+    width: 100%;
+    height: 104px;
+    flex-direction: column;
+    align-items: center;
+}
+.footerTextFrame{
+    display: flex;
+    padding: 5px 0px;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+}
+
+/* except */
+.errorMsg{
+    margin-top: 10px;
+    text-align: center;
+    color: red;
+    font-size: 30px;
+    line-height: 50px;
+    width: 100%;
+}

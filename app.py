@@ -1,26 +1,23 @@
-import ast, os
-from dotenv import load_dotenv
 from flask import *
-import module.flask_modules as flask_modules
+import random
 
+from api import blueprint
+# import module.flask_modules as flask_modules
 from module import get_connection
 
 app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
+app.static_folder="app_folder"
 
+# session["secret_key"] = random.randint(1000000000, 9999999999)
 app.json.ensure_ascii = False
 
 # from flask_cors import CORS
 # CORS(app)
 
-
-# get db config
-load_dotenv()
-# ast.literal_eval <- 以不會執行內文的方式，讀取並正確轉義 str 成其它其他 data type
-db_config = ast.literal_eval(os.getenv("config"))
-app.config['connection_pool'] = get_connection.create_pool(db_config)
-flask_modules.register_blue(app)
+app.config['connection_pool'] = get_connection.access_db()
+app.register_blueprint(blueprint)
 
 
 # Pages
