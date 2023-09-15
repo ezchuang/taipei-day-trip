@@ -1,6 +1,6 @@
 from sub_functions.module_data import get_connect
 from sub_functions.module_data import module_init_program
-import qry_para_set_db_constructor
+from sub_functions import qry_para_set_db_constructor
 
 
 # Create_Table
