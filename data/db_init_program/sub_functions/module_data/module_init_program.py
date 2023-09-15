@@ -1,4 +1,4 @@
-import get_connect
+from sub_functions.module_data import get_connect
 """
 記得加上 Try error
 execute() 有可能發生錯誤
