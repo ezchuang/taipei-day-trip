@@ -6,7 +6,7 @@ execute() 有可能發生錯誤
 
 
 # decorator of CRUD
-def preprocessing(func:function) -> bool:
+def preprocessing(func) -> bool:
     def wrapper(db_connection:object, db_cursor:object, paras:dict) -> bool:
         command = combine_query(func.__name__, paras)
         return func(db_connection, db_cursor, command, paras.get('target'))
