@@ -20,19 +20,21 @@ def assort_data(db_connection_pool, data) -> None:
         # 依序建立表格資料
         qry_para_set_data_washer.create_table_attractions(item, mrt_dict, cat_dict, attractions_arr)
         qry_para_set_data_washer.create_table_locs(item, locs_arr)
-        qry_para_set_data_washer.create_table_weird_data(item, locs_arr, weird_data_arr)
+        qry_para_set_data_washer.create_table_weird_data(item, weird_data_arr)
         # 切開 files url 字串形成 file_temp_arr 中的 sub arr
-        file_index = qry_para_set_data_washer.create_table_locs(item, file_index, file_temp_arr)
+        file_index = qry_para_set_data_washer.create_table_files_part1(item, file_index, file_temp_arr)
     
     # 外面兩層 for loop 將檔案扁平化加入 files_arr
     for file_temp_arr_sub in file_temp_arr:
         for data in file_temp_arr_sub:
-            file_index = qry_para_set_data_washer.create_table_locs(files_arr, data)
+            file_index = qry_para_set_data_washer.create_table_files_part2(files_arr, data)
+
+    # print(mrt_arr)
 
     # 將 data_cluster 中的 data_arr 中的 data 資料 依序加入 DB 中 (CREATE)
     for data_arr in data_cluster:
         for data in data_arr:
-            temp_value = "%s," * (len(data))
+            temp_value = "%s," * (len(data["target"]))
             data["values"] = temp_value[:-1]
             module_init_program.insert_data(db_connection_pool, data)
         

@@ -88,6 +88,8 @@ def query_create(db_connection, db_cursor, command, target) -> bool:
 @get_connection.get_connection
 @preprocessing
 def query_fetch_one(db_connection, db_cursor, command, target) -> dict:
+    db_cursor.execute("SET SESSION group_concat_max_len = 100000")
+
     db_cursor.execute(command, target)
     return db_cursor.fetchone()
 
@@ -96,6 +98,7 @@ def query_fetch_one(db_connection, db_cursor, command, target) -> dict:
 @get_connection.get_connection
 @preprocessing
 def query_fetch_all(db_connection, db_cursor, command, target) -> dict:
+    db_cursor.execute("SET SESSION group_concat_max_len = 100000")
     db_cursor.execute(command, target)
     return db_cursor.fetchall()
 

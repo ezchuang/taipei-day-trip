@@ -30,7 +30,7 @@ def create_table_mrts(item, mrt_dict, mrt_arr, index_mrt):
 
 
 def create_table_cats(item, cat_dict, cat_arr, index_cat):
-    if item.get("CAT") not in cat_dict:
+    if item.get("CAT") in cat_dict:
         return index_cat
     cat_dict[item["CAT"]] = index_cat
     item_cat = (index_cat, item["CAT"])

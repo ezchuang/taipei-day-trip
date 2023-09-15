@@ -16,7 +16,7 @@ def preprocessing(func) -> bool:
 # process control of combine query 
 def combine_query(func_name:str, paras:dict) -> str:
     if func_name == "check_db_exist":
-        return combine_query_controller(paras)
+        return combine_query_controller(func_name, paras)
     if func_name == "create_db":
         return combine_db_query(paras)
     if func_name == "create_table":
@@ -34,7 +34,6 @@ def combine_general_query(paras:dict) -> str:
 
 
 def combine_db_query(paras:dict) -> str:
-    # 
     if not paras.get("db_name"):
         return 
     
