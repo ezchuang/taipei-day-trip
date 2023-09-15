@@ -14,7 +14,10 @@ body{
     margin: 0px;
 }
 hr{
-    border: solid #E8E8E8 0.5px;
+    /* border: solid #E8E8E8 1px; */
+    background-color: #E8E8E8;
+    border: 0px;
+    height: 1px;
     margin: 0px;
     width: calc(100% - 1px);
 }
@@ -267,14 +270,9 @@ hr{
     height: 32px;
     background:  url("/static/images/Arrow Right.png") 50% / contain no-repeat;
 }
-/* 
-待修正
- */
 .imgPositionCircleButton{
     position: absolute;
     bottom: 0px;
-    /* left: 50%; */
-    /* transform: translate(-50%, 0%); */
     width: 100%;
     display: flex;
     justify-content: center;
@@ -365,14 +363,15 @@ hr{
 
     background: #FFF url('/static/images/calendar.png') right / 24px 24px no-repeat;
     background-position: right 10px top 6px;
+    padding: 0px 10px 0px 10px;
 }
 /* .bookingDateInput::placeholder{
     content: attr(placeholder)
-}
-.bookingDateInput::before{
-    content: attr(placeholder)
-}
-.bookingDateInput::content{
+} */
+/* .bookingDateInput::before{
+    margin: 10px;
+} */
+/* .bookingDateInput::content{
     content: attr(placeholder)
 } */
 /* .bookingDateInput:blank{ */
@@ -443,7 +442,7 @@ input[type="date"]:placeholder-shown::content{
 }
 @media(max-width: 800px){
     .profileBookingFrame{
-        margin: 40px 0px 40px 0px;
+        margin: 0px 0px 40px 0px;
     }
 }
 .infosDescription{
