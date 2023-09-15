@@ -10,7 +10,7 @@
      3. Python 套件管理工具：
          - `sudo apt update && sudo apt install python3-pip`
      4. module 安裝:  
-         - `pip -r requirements.txt`
+         - `pip install -r requirements.txt`
         1. module 取出:  
             - `pip freeze > requirements.txt `
   3. MySQL 安裝: 
@@ -25,7 +25,7 @@
 ## 資料操作
 - 資料庫初始化:
   1. 執行資料庫建立 & 資料匯入腳本: 
-      - `sudo python3 /data/db_init_program/db_init_program.py`
+      - `sudo python3 data/db_init_program/db_init_program.py`
   2. 執行資料庫建立: 
       - `Y/N`
   3. 資料匯入: 
