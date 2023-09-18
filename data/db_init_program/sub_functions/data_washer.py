@@ -41,7 +41,7 @@ def assort_data(db_connection_pool, data) -> None:
 
 def main():
     data_arr =[]
-    db_connection_pool = get_connect.create_pool()
+    db_connection_pool = get_connect.access_db()
     db_name = "website_taipei"
     db_connection_pool.set_config(database=db_name)
 

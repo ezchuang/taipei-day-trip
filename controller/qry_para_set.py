@@ -69,6 +69,45 @@ def mrts_list() -> str:
     return command_paras
 
 
+def signup(data_signup:dict) -> str:
+    data = (data_signup["name"],
+            data_signup["email"],
+            data_signup["password"],)
+    command_paras = {"table": "auth",
+                     "columns": "name, email, password",
+                     "values": "%s, %s, %s",
+                     "target" : data}
+    return command_paras
+
+
+def signin(email:int) -> str:
+    command_paras = {
+        "columns" : "id, name, email, password",
+        "table" : "auth",
+        "where" : "email = %s",
+        "group_by" : None,
+        "order_by" : None,
+        "order_ordered" : None,
+        "limit" : None,
+        "target" : (email,)
+    }
+    return command_paras
+
+
+def verify(decoded_data:dict):
+    command_paras = {
+        "columns" : "id, name, email",
+        "table" : "auth",
+        "where" : "id = %s AND name = %s AND email = %s",
+        "group_by" : None,
+        "order_by" : None,
+        "order_ordered" : None,
+        "limit" : None,
+        "target" : (decoded_data["id"], decoded_data["name"], decoded_data["email"],)
+    }
+    return command_paras
+
+
 """
 OK 形式:
 
