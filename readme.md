@@ -2,7 +2,15 @@
 ## 初始化
 - 程式 與 模組安裝:
   1. ubuntu apt 更新: `sudo apt update`
-  2. Python 安裝: 
+  2. git 安裝: 
+     1. git 安裝: 
+         - `sudo apt-get install git`
+     2. git 檔案抓取: 
+         - `git clone "git clone HTTPS"` maybe you need specific branch, add `--branch "branch name"` after the commend before.
+           - `git remote "git clone HTTPS"`
+           - `git checkout "branch name"`
+           - `git pull`
+  3. Python 安裝: 
      1. Python 安裝: 
          - `sudo apt-get install python3`
      2. Python 版本檢查: 
@@ -13,7 +21,7 @@
          - `pip install -r requirements.txt`
         1. module 取出:  
             - `pip freeze > requirements.txt `
-  3. MySQL 安裝: 
+  4. MySQL 安裝: 
      1. MySQL 安裝:
          - `sudo apt install mysql-server`
      2. 顯示 MySQL 的系統服務狀態:
@@ -39,6 +47,7 @@
   3. Python 背景執行 (記得確認路徑):
      - `sudo nohup python3 app.py &`
   4. 刪除背景執行:
-     - `sudo -s`
-     - `ps -u root`/`ps -ax` 不知道是否需要使用 `ps -lf -u root`
-     - `kill '對象thread'`
+     - `ps -ef`
+       - `ps -ef | grep "你想撈的關鍵字"`
+       - 其他指令參考: `ps -u root` / `ps -ax` / `ps -lf -u root`
+     - `sudo kill '對象thread'`
