@@ -6,8 +6,9 @@
      1. git 安裝: 
          - `sudo apt-get install git`
      2. git 檔案抓取: 
-         - `git clone "git clone HTTPS"` maybe you need specific branch, add `--branch "branch name"` after the commend before.
-           - `git remote "git clone HTTPS"`
+         - `git clone "git HTTPS"` maybe you need specific branch, add `--branch "branch name"` after the commend before.
+         - Other way:
+           - `git remote "git HTTPS"`
            - `git checkout "branch name"`
            - `git pull`
   3. Python 安裝: 

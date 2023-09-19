@@ -1,6 +1,7 @@
 from flask import ( Blueprint, request, session, current_app,
                    request, jsonify)
-import random, string
+from datetime import datetime, timedelta
+# import random, string
 
 import jwt
 
@@ -12,7 +13,8 @@ from controller import qry_para_set
 blueprint = Blueprint('blueprint123', __name__, url_prefix ="/api")
 blueprint.static_folder = "api"
 
-secret_key = "".join(random.choice(string.ascii_letters + string.digits) for i in range(20))
+secret_key = "oQAQByzarbxzNYSvuP3V4sdZyfKqxeHq"
+# secret_key = "".join(random.choice(string.ascii_letters + string.digits) for i in range(32))
 
 
 # api 全部都需要驗證
@@ -54,36 +56,39 @@ def signup():
     input_data = request.get_json()
     try:
         if not input_data.get("name") or \
-            not input_data.get("password") or \
-            not input_data.get("email"):
+            not input_data.get("email") or \
+            not input_data.get("password"):
             raise ValueError
         
         command_paras = qry_para_set.signup(input_data)
         if not flask_modules.query_create(command_paras):
             raise ValueError
-        res = {"ok": True}
+        res = {
+            "ok" : True
+            }
         return jsonify(res), 200
     
     except ValueError:
         if not input_data.get("name"):
             msg = "請輸入使用者名稱"
+        elif not input_data.get("email") or "@" not in input_data["email"]:
+            msg = "請輸入 e-mail"
         elif not input_data.get("password"):
             msg = "請輸入密碼"
-        elif not input_data.get("email"):
-            msg = "請輸入 e-mail"
         else:
             msg = "e-mail 重複申請"
 
         res = {
-            "error": True,
-            "message": msg,
+            "error" : True,
+            "message" : msg,
             }
         return jsonify(res), 400
     
-    except:
+    except Exception as err:
+        print(err)
         res = {
-            "error": True,
-            "message": "伺服器內部錯誤",
+            "error" : True,
+            "message" : "伺服器內部錯誤",
             }
         return jsonify(res), 500
     
@@ -92,32 +97,38 @@ def signup():
 @blueprint.route("/user/auth", methods=["GET", "PUT"])
 def signin():
     res = {}
+
+    # 驗證登入狀態
     if request.method == "GET":
-        token = request.headers.get("token")
+        authorization = request.authorization
         try:
-            if not token:
+            if not authorization:
                 raise ValueError
+            token = authorization.token 
+            # JWT Module會自動驗證過期時間
             decoded_data = jwt.decode(token, secret_key, algorithms="HS256")
             command_paras = qry_para_set.verify(decoded_data)
-            print(decoded_data)
             data = flask_modules.query_fetch_one(command_paras)
-            print(data)
+
             if not data:
                 raise ValueError
             res = {
-                "data": data,
+                "data" : data,
             }
             return jsonify(res), 200
-        except:
+        except Exception as err:
+            print(err)
             res = {
-                "data": None,
+                "data" : None,
             }
             return jsonify(res), 200
 
+    # 登入
     elif request.method == "PUT":
         input_data = request.get_json()
         try:
             if not input_data.get("email") or \
+                "@" not in input_data["email"] or \
                 not input_data.get("password"):
                 raise ValueError
             email = input_data.get("email")
@@ -126,12 +137,13 @@ def signin():
             if not data or input_data.get("password") != data.get("password"):
                 raise ValueError
             payload = {
-                "id": data["id"],
-                "name": data["name"],
-                "email": data["email"],
+                "id" : data["id"],
+                "name" : data["name"],
+                "email" : data["email"],
+                "exp" : datetime.now() + timedelta(days=7),
             }
             token = jwt.encode(payload, secret_key, algorithm="HS256")
-            res = {"token": token}
+            res = {"token" : token}
             return jsonify(res), 200
         
         except ValueError:
@@ -142,16 +154,17 @@ def signin():
             else:
                 msg = "e-mail 或密碼錯誤"
             res = {
-                "error": True,
-                "message": msg
+                "error" : True,
+                "message" : msg
             }
             return jsonify(res), 400
         
-        except:
+        except Exception as err:
+            print(err)
             msg = "伺服器內部錯誤"
             res = {
-                "error": True,
-                "message": msg
+                "error" : True,
+                "message" : msg
             }
             return jsonify(res), 500
 
@@ -180,7 +193,7 @@ def attractions_list():
             data.pop()
 
         for data_separated in data:
-            data["images"] = data["images"].split(",")
+            data_separated["images"] = data_separated["images"].split(",")
         res = {
             "nextPage" : page,
             "data" : data,
@@ -199,7 +212,8 @@ def attractions_list():
         }
         return jsonify(res), 400
     
-    except:
+    except Exception as err:
+        print(err)
         res = {
             "error": True,
             "message": "伺服器內部錯誤"
@@ -213,7 +227,7 @@ def attractions_one(attractionId):
     try:
         command_paras = qry_para_set.attractions_one(attractionId)
         data = flask_modules.query_fetch_one(command_paras)
-        data["images"] = data["images"].split(",")        
+        data["images"] = data["images"].split(",")
         res = {
             "data" : data
             }
@@ -229,7 +243,8 @@ def attractions_one(attractionId):
         }
         return jsonify(res), 400
     
-    except:
+    except Exception as err:
+        print(err)
         res = {
             "error": True,
             "message": "伺服器內部錯誤"
@@ -251,7 +266,8 @@ def mrts_list():
         
         return jsonify(res), 200
     
-    except:
+    except Exception as err:
+        print(err)
         res = {
             "error": True,
             "message": "伺服器內部錯誤"

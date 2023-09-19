@@ -215,7 +215,6 @@ async function generateAttractionsController(){
 
     let tempAttractionsDatas = await fetch(getAttractionsUrl(nextPage, keyword))
     let attractionsDataObj = await tempAttractionsDatas.json()
-    console.log(attractionsDataObj)
 
     // 異常驗證
     if (Object.hasOwn(attractionsDataObj, "error")){
