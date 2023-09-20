@@ -271,6 +271,7 @@ async function signin(){
     tokenData = await tokenData.json()
     if (tokenData.hasOwnProperty("error")){
         errMsg(tokenData.message)
+        localStorage.clear()
         return
     }
     localStorage.setItem("token", tokenData.token)
