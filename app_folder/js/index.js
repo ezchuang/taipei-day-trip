@@ -16,9 +16,9 @@ let observerTarget = document.querySelector(".footer")
 
 
 // 網頁轉跳 for div
-function linkToUrl(url){
-    window.location.href = url;
-}
+// function linkToUrl(url){
+//     window.location.href = url;
+// }
 
 
 // get attrctions api url
@@ -121,7 +121,7 @@ async function generateMrts(){
 
         // 加入元素
         listItem.classList.add("listItem")
-        listItem.classList.add("bold")
+        listItem.classList.add("medium")
         listItem.classList.add("pointer")
         let mrtName
         if (! mrtData[i]){
@@ -190,19 +190,19 @@ function generateAttractions(attractionsGroup, attractionsData, order){
     infos.classList.add("infos");
     attractionName.classList.add("attractionName");
     attractionName.classList.add("whiteText");
-    attractionName.classList.add("bold");
+    attractionName.classList.add("medium");
     let textAttractionName = document.createTextNode(attractionsData[order].name);
     attractionName.appendChild(textAttractionName);
     detailMrtCatFrame.classList.add("detailMrtCatFrame");
     detailMrtCat.classList.add("detailMrtCat");
     detailMrt.classList.add("detailMrt");
-    detailMrt.classList.add("bold");
-    detailMrt.classList.add("grayColor-50");
+    detailMrt.classList.add("medium");
+    detailMrt.classList.add("grayText");
     let textAttractionMrt = document.createTextNode(attractionsData[order].mrt);
     detailMrt.appendChild(textAttractionMrt);
     detailCat.classList.add("detailCat");
-    detailCat.classList.add("bold");
-    detailCat.classList.add("grayColor-50");
+    detailCat.classList.add("medium");
+    detailCat.classList.add("grayText");
     let textAttractionCat = document.createTextNode(attractionsData[order].category);
     detailCat.appendChild(textAttractionCat);
 }
@@ -215,7 +215,6 @@ async function generateAttractionsController(){
 
     let tempAttractionsDatas = await fetch(getAttractionsUrl(nextPage, keyword))
     let attractionsDataObj = await tempAttractionsDatas.json()
-    console.log(attractionsDataObj)
 
     // 異常驗證
     if (Object.hasOwn(attractionsDataObj, "error")){

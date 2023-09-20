@@ -29,7 +29,7 @@ def create_table_controller(db_connection_pool):
     
 
 def main():
-    db_connection_pool = get_connect.create_pool()
+    db_connection_pool = get_connect.access_db()
     db_name = "website_taipei"
     paras_db_exist = qry_para_set_db_constructor.check_db_exist(db_name)     
     if not module_init_program.check_db_exist(db_connection_pool, paras_db_exist):
