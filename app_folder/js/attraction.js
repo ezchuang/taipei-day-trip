@@ -128,11 +128,9 @@ async function insertElement(currentId){
 
 // 圖片移動動畫 與 圖片切換
 function moveImg(next){
-    let imgContainer = document.querySelector(`.imgContainer`)
-    // let imgCurrent = document.querySelector(`#img${current}`)
+    let imgInsertTarget = document.querySelector(`.imgInsertTarget`)
     let translateValue = next * 100 - 100
-    // transition: transform 1s ease-in-out;
-    imgContainer.style.transform = translateX(`${translateValue}%`)
+    imgInsertTarget.style.transform = `translateX(${translateValue}%)`
 }
 
 
@@ -143,34 +141,34 @@ function switchImg(next){
         imgCurrent.setAttribute("src", imageArr[((next + i - 1 + imgAmount) % imgAmount)])
         
     }
-    let imgContainer = document.querySelector(`.imgContainer`)
-    imgContainer.style.transition = "none"
-    imgContainer.style.transform = translateX(`100%`)
-    imgContainer.style.transition = "transform 1s ease-in-out;"
+    let imgInsertTarget = document.querySelector(`.imgInsertTarget`)
+    // imgInsertTarget.style.transition = "none"
+    // imgInsertTarget.style.transform = `none`
+    // imgInsertTarget.style.transform = `translateX(-100%)`
+    // imgInsertTarget.style.transition = "transform 1s ease-in-out"
 }
 
 
 // MrtList 左鍵行為
-function arrowLeft(){
-    // [nextImgNum, currentImgNum, previousImgNum] = moveImg(nextImgNum, currentImgNum, previousImgNum, previousImgNum - 1);
-    // [nextImgNum, currentImgNum, previousImgNum] = switchImg(nextImgNum, currentImgNum, previousImgNum, previousImgNum - 1);
-    currentImgNum = currentImgNum - 1
-    moveImg(-1)
+async function arrowLeft(){
+    currentImgNum = (currentImgNum - 1 + imgAmount) % imgAmount
+    moveImg(1) // 行為是右移
+    await sleep(1000)
     switchImg(currentImgNum)
     switchButton()
 }
 // MrtList 右鍵行為
-function arrowRight(){
-    // [previousImgNum, currentImgNum, nextImgNum] = moveImg(previousImgNum, currentImgNum, nextImgNum, nextImgNum + 1);
-    // [previousImgNum, currentImgNum, nextImgNum] = switchImg(previousImgNum, currentImgNum, nextImgNum, nextImgNum + 1);
-    currentImgNum = currentImgNum + 1
-    moveImg(1)
+async function arrowRight(){
+    currentImgNum = (currentImgNum + 1 + imgAmount) % imgAmount
+    moveImg(-1) // 行為是左移
+    await sleep(1000)
     switchImg(currentImgNum)
     switchButton()
 }
 
 
-// 顯示費用，由於抓父層驅動，觸發條件較為寬鬆一點點
+// 顯示費用
+// 由於抓父層驅動，觸發條件較為寬鬆一點點
 function showPrice(){
     let bookingPriceInput = document.querySelector(".bookingPriceInput")
     document.querySelectorAll(".bookingTimeInput").forEach((radio) => {
