@@ -43,7 +43,8 @@
 }
 @media(max-width: 800px){
     .imgFrame{
-        margin: 0px;
+        width: calc(100% - 20px);
+        margin: auto;
     }
 }
 .imgInsertTarget{
