@@ -165,7 +165,7 @@ async function insertData(){
     titleName.textContent = `您好，${name}，待預訂行程如下：`
 
     // 沒有預定行程
-    if (! rawData.data[0].date){
+    if (! rawData.data){
         let innerFrame = document.querySelector(".innerFrame")
         let emptyMsg = document.querySelector(".emptyMsg")
         innerFrame.style.display = "none"
