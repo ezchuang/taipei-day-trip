@@ -13,10 +13,10 @@ function generateAttractionsBookingFrame(attractionFrame, data){
     attractionInsertTarget.appendChild(attractionInfo)
     // Name
     let attractionName = document.createElement("div")
-    let attractionNameLabel = document.createElement("div")
+        // let attractionNameLabel = document.createElement("div")
     let attractionNameCnt = document.createElement("div")
     attractionInfo.appendChild(attractionName)
-    attractionName.appendChild(attractionNameLabel)
+        // attractionName.appendChild(attractionNameLabel)
     attractionName.appendChild(attractionNameCnt)
     // date
     let attractionDate = document.createElement("div")
@@ -56,7 +56,7 @@ function generateAttractionsBookingFrame(attractionFrame, data){
 
     // 賦予屬性
     attractionInsertTarget.classList.add("attractionInsertTarget")
-    // attractionInsertTarget.setAttribute("id", `booking${data.attraction.id}`)
+        // attractionInsertTarget.setAttribute("id", `booking${data.attraction.id}`)
     // 圖片
     attractionImg.classList.add("attractionImg")
     attractionImgInsertTarget.classList.add("attractionImgInsertTarget")
@@ -67,16 +67,17 @@ function generateAttractionsBookingFrame(attractionFrame, data){
     attractionName.classList.add("attractionName")
     attractionName.classList.add("bold")
     attractionName.classList.add("cyanText")
-    attractionNameLabel.classList.add("attractionNameLabel")
-    attractionNameLabel.textContent = "台北一日遊："
+        // attractionNameLabel.classList.add("attractionNameLabel")
+        // attractionNameLabel.textContent = ""
     attractionNameCnt.classList.add("attractionNameCnt")
-    attractionNameCnt.textContent = `${data.attraction.name}`
+    attractionNameCnt.textContent = `台北一日遊： ${data.attraction.name}`
     // date
     attractionDate.classList.add("attractionDate")
     attractionDateLabel.classList.add("attractionDateLabel")
     attractionDateLabel.classList.add("bold")
     attractionDateLabel.textContent = "日期："
     attractionDateCnt.classList.add("attractionDateCnt")
+    attractionDateCnt.classList.add("medium")
     attractionDateCnt.textContent = data.date
     // time
     attractionTime.classList.add("attractionTime")
@@ -84,6 +85,7 @@ function generateAttractionsBookingFrame(attractionFrame, data){
     attractionTimeLabel.classList.add("bold")
     attractionTimeLabel.textContent = "時間："
     attractionTimeCnt.classList.add("attractionTimeCnt")
+    attractionTimeCnt.classList.add("medium")
     if (data.time === "morning"){
         attractionTimeCnt.textContent = "上午 9 點到中午 12 點"
     }else if(data.time === "afternoon"){
@@ -95,6 +97,7 @@ function generateAttractionsBookingFrame(attractionFrame, data){
     attractionPriceLabel.classList.add("bold")
     attractionPriceLabel.textContent = "費用："
     attractionPriceCnt.classList.add("attractionPriceCnt")
+    attractionPriceCnt.classList.add("medium")
     attractionPriceCnt.textContent = `新台幣 ${data.price} 元`
     // location
     attractionLoc.classList.add("attractionLoc")
@@ -102,6 +105,7 @@ function generateAttractionsBookingFrame(attractionFrame, data){
     attractionLocLabel.classList.add("bold")
     attractionLocLabel.textContent = "地點："
     attractionLocCnt.classList.add("attractionLocCnt")
+    attractionLocCnt.classList.add("medium")
     attractionLocCnt.textContent = data.attraction.address
     // delete button
     delImgFrame.classList.add("delImgFrame")

@@ -80,6 +80,7 @@
     flex-wrap: wrap;
     border-radius: 5px;
     border: 1px solid #E8E8E8;
+    overflow: hidden;
 }
 .attractionImg{
     width: 250px;
@@ -109,24 +110,34 @@
         margin-bottom: 30px; */
     }
 }
+
+
+
 .attractionName{
     display: flex;
     align-items: center;
+    top: 0px;
     padding: 5px auto 5px 0px;
     margin-bottom: 10px;
     height: 24px;
 }
-/* @media(max-width: 700px){
-    .attractionName{
-        margin-top: 30px;
-    }
-} */
-.attractionNameLabel{
-    white-space: nowrap;
-}
+    /* @media(max-width: 700px){
+        .attractionName{
+        }
+    } */
+    /* .attractionNameLabel{
+        white-space: nowrap;
+    } */
 .attractionNameCnt{
+    position: absolute;
+    line-height: 19px;
     height: 18px;
+    display: flex;
+    align-items: center;
 }
+
+
+
 .attractionDate{
     display: flex;
     align-items: center;
@@ -198,6 +209,7 @@
     height: 40px;
     display: flex;
     align-items: center;
+    line-height: 19px;
 }
 .userNameCnt{
     display: flex;
@@ -211,6 +223,7 @@
     height: 40px;
     display: flex;
     align-items: center;
+    line-height: 19px;
 }
 .userEmailCnt{
     display: flex;
@@ -224,6 +237,7 @@
     height: 40px;
     display: flex;
     align-items: center;
+    line-height: 19px;
 }
 .userNumberCnt{
     display: flex;
@@ -259,6 +273,7 @@
     height: 40px;
     display: flex;
     align-items: center;
+    line-height: 19px;
 }
 .billNumberCnt{
     display: flex;
@@ -272,6 +287,7 @@
     height: 40px;
     display: flex;
     align-items: center;
+    line-height: 19px;
 }
 .billExpCnt{
     display: flex;
@@ -285,6 +301,7 @@
     height: 40px;
     display: flex;
     align-items: center;
+    line-height: 19px;
 }
 .billPWCnt{
     display: flex;
