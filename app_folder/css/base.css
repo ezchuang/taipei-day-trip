@@ -66,6 +66,9 @@ hr{
 .cyanText{
     color: #489;
 }
+.blackText{
+    color: #000;
+}
 .whiteBg{
     background: #FFF;
 }
@@ -283,4 +286,12 @@ hr{
     font-size: 30px;
     line-height: 50px;
     width: 100%;
+}
+.errorMsgSmall{
+    /* margin: 5px; */
+    color: red;
+    font-size: 16px;
+    line-height: 16px;
+    width: 100%;
+    display: none;
 }

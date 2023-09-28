@@ -49,15 +49,34 @@ def combine_table_query(paras:dict) -> str:
         return 
     
     cols = ""
-    for column, attribute in paras.get("columns").items():
+    for column, attribute in paras.get("columns").items(): # 欄位組合
         cols += f' {column} {attribute},'
     
-    if paras.get("foreign_key"):
+    if paras.get("unique"): # 複合唯一值
+        unique_columns = ""
+        for key_name, additions in paras.get("unique").items():
+            unique_columns += f'CONSTRAINT {key_name}'
+
+            for additions_item, additions_value in additions.items():
+                if not additions_value:
+                    continue
+
+                if additions_item == "columns":
+                    unique_columns += f' UNIQUE ({additions_value})'
+                    continue
+                unique_columns += f'{additions_item.upper()} {additions_value}'
+
+            unique_columns += ","
+
+        unique_columns = unique_columns[:-1] # 移除最後一個 ","
+        cols += f'{unique_columns},'
+
+    if paras.get("foreign_key"): # 外鍵
         for column, fk in paras.get("foreign_key").items():
             cols += f'FOREIGN KEY ({column}) REFERENCES {fk},'
 
     cols = cols[:-1]
-    res = f'CREATE TABLE {paras.get("table_name")} ({cols})'
+    res = f'CREATE TABLE {paras.get("table_name")} ({cols})' # 加上最外圍的 table name
     return res
 
 

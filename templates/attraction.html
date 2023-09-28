@@ -7,7 +7,6 @@
 {% endblock %}
 
 {% block content %}
-<hr/>
 <div class="mainFrame">
     <div class="main">
         <div class="section">
@@ -33,15 +32,16 @@
                 <div class="profileBookingFrame lightgrayBg">
                     <div class="bookingTitle bold grayText">訂購導覽行程</div>
                     <div class="bookingDescription grayText">以此景點為中心的一日行程，帶您探索城市角落故事</div>
-                    <form class="bookingForm" action="/attractions/1" method="get">
+                    <!-- <form class="bookingForm" action="/booking" method="get"> -->
+                    <form class="bookingForm" onsubmit="return false" action="/booking" method="get">
                         <fieldset class="bookingDateFrame">
                             <label class="itemNamebold bold">選擇日期：</label>
-                            <input class="bookingDateInput" type="date" name="bookingDate" placeholder="yoyo/mm/dd" pattern="\d{4}-\d{2}-\d{2}">
+                            <input class="bookingDateInput" type="date" name="bookingDate">
                         </fieldset>
                         <fieldset class="bookingTimeFrame">
                             <label class="itemName bold">選擇時間：</label>
                             <div class="flexCenter">
-                                <input class="bookingTimeInput" type="radio" name="bookingTime" value="2000">
+                                <input class="bookingTimeInput" checked type="radio" name="bookingTime" value="2000">
                                 <label class="bookingTimeText">上半天</label>
                             </div>
                             <div class="flexCenter">
@@ -51,10 +51,11 @@
                         </fieldset>
                         <div class="bookingPriceFrame">
                             <div class="bookingPrice bold">導覽費用：</div>
-                            <div class="bookingPriceInput">新台幣 0 元</div>
+                            <div class="bookingPriceInput">新台幣 2000 元</div>
                         </div>
-                        <div class="bookingButton button cyanBg whiteText pointer">開始預約行程</div>
+                        <input type="submit" value="開始預約行程" class="bookingButton button cyanBg whiteText pointer">
                     </form>
+                    <div class="errorMsgSmall"></div>
                 </div>
             </div>
         </div>

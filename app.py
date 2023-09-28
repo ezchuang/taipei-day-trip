@@ -1,6 +1,8 @@
 from flask import *
 
-from api import blueprint
+from api_folder.api_user import blueprint_user
+from api_folder.api_attractions import blueprint_attractions
+from api_folder.api_booking import blueprint_booking
 from module import get_connection
 
 app=Flask(__name__)
@@ -15,7 +17,9 @@ app.json.ensure_ascii = False
 # CORS(app)
 
 app.config['connection_pool'] = get_connection.access_db()
-app.register_blueprint(blueprint)
+app.register_blueprint(blueprint_user)
+app.register_blueprint(blueprint_attractions)
+app.register_blueprint(blueprint_booking)
 
 
 # Pages

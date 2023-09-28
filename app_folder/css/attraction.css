@@ -275,6 +275,7 @@ input[type="date"]:placeholder-shown::content{
     width: 154px;
     height: 36px;
     border-radius: 5px;
+    border: 0px;
 }
 
 /* infos */

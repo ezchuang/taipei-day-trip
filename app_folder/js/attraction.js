@@ -1,4 +1,5 @@
 // 宣告全域變數
+let currentId = null // 目前頁面景點編號
 let currentImgNum = null // 目前圖片編號
 let imgAmount = null // 共幾張圖
 let switchingFlag = false // 是否切換中 <- 為什麼加了這個就異常?
@@ -10,12 +11,6 @@ function getID(){
     let dynamicUrl = window.location.pathname.split('/')
     let currentId = dynamicUrl.pop()
     return currentId
-}
-
-
-// 暫停
-function sleep(time){
-    return new Promise(resolve => setTimeout(resolve, time))
 }
 
 
@@ -118,7 +113,7 @@ async function insertElement(currentId){
     for (let i = 0; i < 3; i++){
         // 注意!!!
         let img = document.querySelector(`#img${i}`)
-        index = ((i -1 + imgAmount) % imgAmount)
+        let index = ((i -1 + imgAmount) % imgAmount)
         img.setAttribute("alt", `img${index}`)
         img.setAttribute("src", imageArr[index])
     }
@@ -167,6 +162,62 @@ async function arrowRight(){
 }
 
 
+// booking 按鈕行為
+async function addToBooking(){
+    // 驗證登入
+    if (! verified){
+        createSignin()
+        return false
+    }
+
+    // fetch 資料調取
+    let formData = document.querySelector(".bookingForm")
+    let date = formData.querySelector(".bookingDateInput").value
+    let time
+    let price = formData.querySelectorAll("input[name='bookingTime']")
+    for (let p of price){
+        if (p.checked){
+            price = p.value
+        }
+    }
+
+    // 沒填
+    if (! date || ! price){
+        let errMsg = document.querySelector(".errorMsgSmall")
+        errMsg.style.display = "block"
+        errMsg.textContent = "資料未填齊"
+        return false
+    }
+
+    if (price === "2000"){
+        time = "morning"
+    }else if (price === "2500"){
+        time = "afternoon"
+    }
+
+    // fetch 資料打包、詢問
+    let bodyFetchData = JSON.stringify({
+        "attractionId": currentId,
+        "date": date,
+        "time": time,
+        "price": price
+    })
+    let res = await fetchPackager({urlFetch:"/api/booking", methodFetch:"POST", bodyFetch:bodyFetchData}) // headers_fetch = default
+
+    // 輸出結果
+    if (res.hasOwnProperty("error")){
+        let errMsg = document.querySelector(".errorMsgSmall")
+        errMsg.style.display = "block"
+        errMsg.textContent = res.message
+        return false
+    }
+
+    let url = "/booking"
+    linkToUrl(url)
+    return true
+}
+
+
 // 顯示費用
 // 由於抓父層驅動，觸發條件較為寬鬆一點點
 function showPrice(){
@@ -181,10 +232,11 @@ function showPrice(){
 
 // 監聽事件
 document.addEventListener("DOMContentLoaded", () => {
-    let currentId = getID()
+    currentId = getID()
     insertElement(currentId)
     changePlaceholderOfDate()
 })
 document.querySelector("#arrowLeft").addEventListener("click", arrowLeft)
 document.querySelector("#arrowRight").addEventListener("click", arrowRight)
 document.querySelector(".bookingTimeFrame").addEventListener("click", showPrice)
+document.querySelector(".bookingButton").addEventListener("click", addToBooking)
