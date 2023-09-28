@@ -206,9 +206,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     await insertData()
     calculatePrice()
 })
-document.querySelector("#signin").addEventListener("click", () => {
-    if (! verified){
-        url = "/"
-        linkToUrl(url)
-    }
+document.querySelector("#signin").addEventListener("click", async () => {
+    await sleep(500)
+    url = "/"
+    linkToUrl(url)
 })
