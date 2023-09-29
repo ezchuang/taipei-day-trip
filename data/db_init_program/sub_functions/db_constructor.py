@@ -26,6 +26,10 @@ def create_table_controller(db_connection_pool):
     # 註冊用
     paras_table_auth = qry_para_set_db_constructor.create_table_auth()
     module_init_program.create_table(db_connection_pool, paras_table_auth)
+
+    # booking
+    paras_table_booking = qry_para_set_db_constructor.create_table_booking()
+    module_init_program.create_table(db_connection_pool, paras_table_booking)
     
 
 def main():

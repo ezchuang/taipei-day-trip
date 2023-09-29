@@ -1,9 +1,9 @@
 // 宣告全域變數
-let previousImgNum = null // 上一個圖片編號
+let currentId = null // 目前頁面景點編號
 let currentImgNum = null // 目前圖片編號
-let nextImgNum = null // 下一個圖片編號
 let imgAmount = null // 共幾張圖
-// let switchingFlag = false // 是否切換中 <- 為什麼加了這個就異常?
+let switchingFlag = false // 是否切換中 <- 為什麼加了這個就異常?
+let imageArr = [] // image array 儲存image 網址
 
 
 // 抓網址 ID
@@ -12,18 +12,6 @@ function getID(){
     let currentId = dynamicUrl.pop()
     return currentId
 }
-
-
-// 暫停
-function sleep(time){
-    return new Promise(resolve => setTimeout(resolve, time))
-}
-
-
-// 網頁轉跳 for div
-// function linkToUrl(url){
-//     window.location.href = url;
-// }
 
 
 // 小圓點校正
@@ -72,187 +60,166 @@ async function insertElement(currentId){
     infosTraffic.appendChild(textAttractionTraffic)
 
     
-    let images = data_target.images
-    imgAmount = images.length // 全域變數: 共幾張圖
+    imageArr = data_target.images
+    imgAmount = imageArr.length // 全域變數: 共幾張圖
+
     let imgInsertTarget = document.querySelector("#imgInsertTarget")
     imgInsertTarget.style.left = imgInsertTarget.offsetWidth
-    if (images.length < 2){ // 只有一張圖
+    if (imgAmount < 2){ // 只有一張圖
+        currentImgNum = 0
         document.querySelector(".leftContainer").style.display = "none"
         document.querySelector(".rightContainer").style.display = "none"
 
+        let imgDiv = document.createElement("div")
         let img = document.createElement("img")
-        imgInsertTarget.appendChild(img)
-        img.classList.add("imgContainer")
+        imgInsertTarget.appendChild(imgDiv)
+        imgDiv.appendChild(img)
+        imgDiv.classList.add("imgContainer")
+        img.classList.add("imgTarget")
         
         img.setAttribute("id", `img0`)
         img.setAttribute("alt", `img0`)
-        img.setAttribute("src", images[0])
+        img.setAttribute("src", images[currentImgNum])
         return 
     }
-    if (images.length < 1){ // 沒有圖
+    if (imgAmount < 1){ // 沒有圖
         let div = document.createElement("div")
         imgInsertTarget.appendChild(div)
+        imgInsertTarget.textContent = "no image"
         div.setAttribute("class", "errorMsg")
         return
     }
-    
-    for (let i = -2; i <= images.length + 1; i++){
         
+    for (let i = 0; i < 3; i++){
+        currentImgNum = 0
+
+        let imgDiv = document.createElement("div")
         let img = document.createElement("img")
-        imgInsertTarget.appendChild(img)
-        img.classList.add("imgContainer")
-
-        // 多在頭尾建立各 2 個 img
-        if (i <= -1){
-            img.setAttribute("id", `img${String(i)}`)
-            img.setAttribute("alt", `img${String(i)}`)
-            img.setAttribute("src", images[images.length + i])
-        }else if (i >= images.length){
-            img.setAttribute("id", `img${String(i)}`)
-            img.setAttribute("alt", `img${String(i)}`)
-            img.setAttribute("src", images[0])
-        }else{
-            img.setAttribute("id", `img${String(i)}`)
-            img.setAttribute("alt", `img${String(i)}`)
-            img.setAttribute("src", images[i])
-        }
-        if (i <= -1 || i >= images.length){
-            continue
-        }
-
-        // 插入小圓點 
+        imgInsertTarget.appendChild(imgDiv)
+        imgDiv.appendChild(img)
+        imgDiv.classList.add("imgContainer")
+        img.classList.add("imgTarget")
+        
+        img.setAttribute("id", `img${i}`)
+    }
+    for (let i = 0; i < imgAmount; i++){
+        // 插入小圓點
         let imgPositionCircleButton = document.querySelector("#imgPositionCircleButton")
         let imgButton = document.createElement("div")
         imgPositionCircleButton.appendChild(imgButton)
         imgButton.classList.add("imgButtonWhite")
         imgButton.setAttribute("id", `imgButton${String(i)}`)
     }
-
-    img0 = document.querySelector(`#img${0}`)
-    img0.style.width = `100%`
-    img0.style.display = "block"
-
-    // for (let i = -1; i < 2; i++){ // 3 個
-    //     img = document.querySelector(`#img${i}`)
-    //     img.style.width = `100%`
-    //     img.style.display = "block"
-    // }
-
-    previousImgNum = -1
-    currentImgNum = 0
-    nextImgNum = 1
+    for (let i = 0; i < 3; i++){
+        // 注意!!!
+        let img = document.querySelector(`#img${i}`)
+        let index = ((i -1 + imgAmount) % imgAmount)
+        img.setAttribute("alt", `img${index}`)
+        img.setAttribute("src", imageArr[index])
+    }
     switchButton()
 }
 
 
 // 圖片移動動畫 與 圖片切換
-async function moveImg(disappear, current, next, expand){
-    let container =  document.querySelector("#imgInsertTarget")
-    let containerWidth = container.offsetWidth
-    let spec = 60 // 縮小刻度
-
-
-    // 測試
-    let nextImg = document.querySelector(`#img${String(next)}`)
-    
-    
-    let disappearImg = document.querySelector(`#img${String(disappear)}`)
-    let expandImg = document.querySelector(`#img${String(expand)}`)
-    
-    let widthChanged = containerWidth/spec
-    let disappearImgWidth = containerWidth
-    let expandImgWidth = 0
-
-    nextImg.style.width = `100%`
-    disappearImg.style.width = `100%`
-    nextImg.style.display = "block"
-    disappearImg.style.display = "block"
-    expandImg.style.width = `${expandImgWidth}px`
-    expandImg.style.display = "block"
-
-    for (let i = spec; i > 0; i--){
-        disappearImgWidth -= widthChanged
-        disappearImg.style.width = `${disappearImgWidth}px`
-
-        expandImgWidth += widthChanged
-        expandImg.style.width = `${expandImgWidth}px`
-
-        await sleep(3)
-    }
-    disappearImg.style.display = "none"
-
-    return [current, next, expand] // 進位
+function moveImg(next){
+    let imgInsertTarget = document.querySelector(`.imgInsertTarget`)
+    let translateValue = next * 100 - 100
+    imgInsertTarget.style.transform = `translateX(${translateValue}%)`
 }
 
 
 // 圖片位置校正
-function switchImg(previous, current, next){
-    let indexArr = [previous, current, next]
-    if (0 <= indexArr[1] && indexArr[1] <= imgAmount - 1){
-        [indexArr[0], indexArr[2]].forEach((index) => {
-            img = document.querySelector(`#img${index}`)
-            img.style.width = `0%`
-            img.style.display = "none"
-        })
-        return indexArr
+function switchImg(next){
+    for (let i = 0; i < 3; i++){
+        let imgCurrent = document.querySelector(`#img${i}`)
+        imgCurrent.setAttribute("src", imageArr[((next + i - 1 + imgAmount) % imgAmount)])
+        
     }
-    // 超界
-    // 歸零
-    indexArr.forEach((index) => {
-        img = document.querySelector(`#img${index}`)
-        img.style.width = `0%`
-        img.style.display = "none"
-    })
-
-    // 轉址
-    // console.log("超界處理前",indexArr)
-    if (indexArr[1] < 0){ // 往左超界
-        for (let i = 0; i < 3; i++){
-            indexArr[i] = imgAmount - i
-        }
-    }else{ // 往右超界
-        for (let i = 0; i < 3; i++){
-            indexArr[i] = -1 + i
-        }
-    }
-    // console.log("超界", indexArr)
-    
-    // 重新給予寬度
-    [indexArr[1]].forEach((index) => {
-        img = document.querySelector(`#img${index}`)
-        img.style.width = `100%`
-        img.style.display = "block"
-    })
-
-    return indexArr
+    let imgInsertTarget = document.querySelector(`.imgInsertTarget`)
+    // imgInsertTarget.style.transition = "none"
+    // imgInsertTarget.style.transform = `none`
+    // imgInsertTarget.style.transform = `translateX(-100%)`
+    // imgInsertTarget.style.transition = "transform 1s ease-in-out"
 }
 
 
 // MrtList 左鍵行為
 async function arrowLeft(){
-    // if (switchingFlag){
-    //     return 
-    // }
-    // switchingFlag = true
-    [nextImgNum, currentImgNum, previousImgNum] = await moveImg(nextImgNum, currentImgNum, previousImgNum, previousImgNum - 1);
-    [nextImgNum, currentImgNum, previousImgNum] = switchImg(nextImgNum, currentImgNum, previousImgNum, previousImgNum - 1);
+    currentImgNum = (currentImgNum - 1 + imgAmount) % imgAmount
+    moveImg(1) // 行為是右移
+    await sleep(1000)
+    switchImg(currentImgNum)
     switchButton()
-    // switchingFlag = false
 }
 // MrtList 右鍵行為
 async function arrowRight(){
-    // if (switchingFlag){
-    //     return 
-    // }
-    // switchingFlag = true
-    [previousImgNum, currentImgNum, nextImgNum] = await moveImg(previousImgNum, currentImgNum, nextImgNum, nextImgNum + 1);
-    [previousImgNum, currentImgNum, nextImgNum] = switchImg(previousImgNum, currentImgNum, nextImgNum, nextImgNum + 1);
-    await switchButton()
-    // switchingFlag = false
+    currentImgNum = (currentImgNum + 1 + imgAmount) % imgAmount
+    moveImg(-1) // 行為是左移
+    await sleep(1000)
+    switchImg(currentImgNum)
+    switchButton()
 }
 
 
-// 顯示費用，由於抓父層驅動，觸發條件較為寬鬆一點點
+// booking 按鈕行為
+async function addToBooking(){
+    // 驗證登入
+    if (! verified){
+        createSignin()
+        return false
+    }
+
+    // fetch 資料調取
+    let formData = document.querySelector(".bookingForm")
+    let date = formData.querySelector(".bookingDateInput").value
+    let time
+    let price = formData.querySelectorAll("input[name='bookingTime']")
+    for (let p of price){
+        if (p.checked){
+            price = p.value
+        }
+    }
+
+    // 沒填
+    if (! date || ! price){
+        let errMsg = document.querySelector(".errorMsgSmall")
+        errMsg.style.display = "block"
+        errMsg.textContent = "資料未填齊"
+        return false
+    }
+
+    if (price === "2000"){
+        time = "morning"
+    }else if (price === "2500"){
+        time = "afternoon"
+    }
+
+    // fetch 資料打包、詢問
+    let bodyFetchData = JSON.stringify({
+        "attractionId": currentId,
+        "date": date,
+        "time": time,
+        "price": price
+    })
+    let res = await fetchPackager({urlFetch:"/api/booking", methodFetch:"POST", bodyFetch:bodyFetchData}) // headers_fetch = default
+
+    // 輸出結果
+    if (res.hasOwnProperty("error")){
+        let errMsg = document.querySelector(".errorMsgSmall")
+        errMsg.style.display = "block"
+        errMsg.textContent = res.message
+        return false
+    }
+
+    let url = "/booking"
+    linkToUrl(url)
+    return true
+}
+
+
+// 顯示費用
+// 由於抓父層驅動，觸發條件較為寬鬆一點點
 function showPrice(){
     let bookingPriceInput = document.querySelector(".bookingPriceInput")
     document.querySelectorAll(".bookingTimeInput").forEach((radio) => {
@@ -265,10 +232,11 @@ function showPrice(){
 
 // 監聽事件
 document.addEventListener("DOMContentLoaded", () => {
-    let currentId = getID()
+    currentId = getID()
     insertElement(currentId)
     changePlaceholderOfDate()
 })
 document.querySelector("#arrowLeft").addEventListener("click", arrowLeft)
 document.querySelector("#arrowRight").addEventListener("click", arrowRight)
 document.querySelector(".bookingTimeFrame").addEventListener("click", showPrice)
+document.querySelector(".bookingButton").addEventListener("click", addToBooking)

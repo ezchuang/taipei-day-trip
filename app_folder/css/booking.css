@@ -1,0 +1,350 @@
+.frame{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: calc(100vh - 104px - 55px);
+    width: 100%;
+}
+.innerFrame{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    max-width: 1200px;
+    width: 100%;
+    margin: 40px 0px 30px 0px;
+}
+@media(max-width: 1220px){
+    .innerFrame{
+        width: calc(100% - 20px);
+    }
+}
+.titleName{
+    max-width: 1000px;
+    width: 100%;
+    display: flex;
+    height: 24px;
+    align-items: center;
+    margin-top: 40px;
+}
+@media(max-width: 1220px){
+    .titleName{
+        width: calc(100% - 20px);
+    }
+}
+.emptyMsg{
+    max-width: 1000px;
+    width: 100%;
+    display: none;
+    height: 24px;
+    margin-top: 30px;
+    margin-bottom: 40px;
+    align-items: center;
+}
+@media(max-width: 1220px){
+    .emptyMsg{
+        width: calc(100% - 20px);
+    }
+}
+
+/* input */
+.inputbox{
+    display: flex;
+    align-items: center;
+    font-family: Noto Sans TC, sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    line-height: 13.3px;
+}
+
+/* attraction */
+.attractionFrame{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 980px;
+    width: 100%;
+    margin-bottom: 40px;
+}
+@media(max-width: 700px){
+    .attractionFrame{
+        min-height: 100%;
+    }
+}
+.attractionInsertTarget{
+    display: flex;
+    position: relative;
+    max-width: 980px;
+    width: 100%;
+    flex-wrap: wrap;
+    border-radius: 5px;
+    border: 1px solid #E8E8E8;
+    overflow: hidden;
+}
+.attractionImg{
+    width: 250px;
+    height: 200px;
+}
+@media(max-width: 700px){
+    .attractionImg{
+        width: 100%;
+    }
+}
+.attractionImgInsertTarget{
+    object-fit: cover;
+    height:100%;
+    width:100%;
+}
+.attractionInfo{
+    display: flex;
+    flex-direction: column;
+    margin-right: auto;
+    margin-left: 30px;
+    gap: 10px;
+}
+@media(max-width: 700px){
+    .attractionInfo{
+        margin: 30px 5px 40px 5px;
+        /* margin-left: 0px;
+        margin-bottom: 30px; */
+    }
+}
+
+
+
+.attractionName{
+    display: flex;
+    align-items: center;
+    top: 0px;
+    padding: 5px auto 5px 0px;
+    margin-bottom: 10px;
+    height: 24px;
+}
+    /* @media(max-width: 700px){
+        .attractionName{
+        }
+    } */
+    /* .attractionNameLabel{
+        white-space: nowrap;
+    } */
+.attractionNameCnt{
+    position: absolute;
+    line-height: 19px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+}
+
+
+
+.attractionDate{
+    display: flex;
+    align-items: center;
+    height: 24px;
+}
+.attractionDateLabel{
+    margin: 0px 5px 0px 0px;
+}
+.attractionTime{
+    display: flex;
+    align-items: center;
+    height: 24px;
+}
+.attractionTimeLabel{
+    margin: 0px 5px 0px 0px;
+}
+.attractionPrice{
+    display: flex;
+    align-items: center;
+    height: 24px;
+}
+.attractionPriceLabel{
+    margin: 0px 5px 0px 0px;
+}
+.attractionLoc{
+    display: flex;
+    align-items: center;
+    height: 24px;
+}
+.attractionLocLabel{
+    margin: 0px 5px 0px 0px;
+}
+.delImgFrame{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 30px;
+    width: 30px;
+}
+@media(max-width: 700px){
+    .delImgFrame{
+        top: auto;
+        bottom: 10px;
+        right: 5px;
+    }
+}
+.delImg{
+    height: 100%;
+    width: 100%;
+}
+
+/* userFrame */
+.userFrame{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    max-width: 980px;
+    width: 100%;
+    gap: 15px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+.userTitle{
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+}
+.userName{
+    height: 40px;
+    display: flex;
+    align-items: center;
+    line-height: 19px;
+}
+.userNameCnt{
+    display: flex;
+    height: 18px;
+    padding: 10px;
+    align-items: flex-start;
+    border-radius: 5px;
+    border: 1px solid #E8E8E8;
+}
+.userEmail{
+    height: 40px;
+    display: flex;
+    align-items: center;
+    line-height: 19px;
+}
+.userEmailCnt{
+    display: flex;
+    height: 18px;
+    padding: 10px;
+    align-items: flex-start;
+    border-radius: 5px;
+    border: 1px solid #E8E8E8;
+}
+.userNumber{
+    height: 40px;
+    display: flex;
+    align-items: center;
+    line-height: 19px;
+}
+.userNumberCnt{
+    display: flex;
+    height: 18px;
+    padding: 10px;
+    align-items: flex-start;
+    border-radius: 5px;
+    border: 1px solid #E8E8E8;
+}
+.userReminder{
+    display: flex;
+    align-items: center;
+    /* height: 24px; */
+}
+
+/* billFrame */
+.billFrame{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    max-width: 980px;
+    width: 100%;
+    gap: 15px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+.billTitle{
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+}
+.billNumber{
+    height: 40px;
+    display: flex;
+    align-items: center;
+    line-height: 19px;
+}
+.billNumberCnt{
+    display: flex;
+    height: 18px;
+    padding: 10px;
+    align-items: flex-start;
+    border-radius: 5px;
+    border: 1px solid #E8E8E8;
+}
+.billExp{
+    height: 40px;
+    display: flex;
+    align-items: center;
+    line-height: 19px;
+}
+.billExpCnt{
+    display: flex;
+    height: 18px;
+    padding: 10px;
+    align-items: flex-start;
+    border-radius: 5px;
+    border: 1px solid #E8E8E8;
+}
+.billPW{
+    height: 40px;
+    display: flex;
+    align-items: center;
+    line-height: 19px;
+}
+.billPWCnt{
+    display: flex;
+    height: 18px;
+    padding: 10px;
+    align-items: flex-start;
+    border-radius: 5px;
+    border: 1px solid #E8E8E8;
+}
+
+/* checkFrame */
+.checkFrame{
+    display: flex;
+    flex-direction: column;
+    max-width: 980px;
+    width: 100%;
+    gap: 15px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+.checkPrice{
+    display: flex;
+    height:20px;
+    align-items: center;
+    margin-left: auto;
+}
+.checkBtn{
+    margin: 22px 0px 22px auto;
+    padding: 10px 20px 10px 20px;
+    border-radius: 5px;
+}
+
+/* error msg */
+.bookingErrMsg{
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    color: red;
+    font-size: 16px;
+    line-height: 16px;
+}
+@media(max-width:700px){
+    .bookingErrMsg{
+        transform: translate(0%, -50%);
+    }
+}

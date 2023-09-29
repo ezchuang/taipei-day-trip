@@ -66,12 +66,12 @@ def create_table_files() -> bool:
         "table_name" : "files",
         "columns" : {
             "id" : "BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT",
-            "attractions_id" : "BIGINT UNSIGNED NOT NULL",
+            "attraction_id" : "BIGINT UNSIGNED NOT NULL",
             "file_url" : "VARCHAR(255) NOT NULL",
-            "INDEX" : "attraction_id_index (attractions_id)",
+            "INDEX" : "attraction_id_index (attraction_id)",
         },
         "foreign_key" : {
-            "attractions_id" : "attractions(id)",
+            "attraction_id" : "attractions(id)",
         },
     }
     return construct_paras
@@ -81,7 +81,7 @@ def create_table_locs() -> bool:
         "table_name" : "locs",
         "columns" : {
             "id" : "BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT",
-            "attractions_id" : "BIGINT UNSIGNED UNIQUE KEY NOT NULL",
+            "attraction_id" : "BIGINT UNSIGNED UNIQUE KEY NOT NULL",
             "direction" : "VARCHAR(5000) NOT NULL",
             "longitude" : "DOUBLE(8, 5) NOT NULL",
             "latitude" : "DOUBLE(7, 5) NOT NULL",
@@ -89,7 +89,7 @@ def create_table_locs() -> bool:
             "address" : "VARCHAR(255) NOT NULL",
         },
         "foreign_key" : {
-            "attractions_id" : "attractions(id)",
+            "attraction_id" : "attractions(id)",
         },
     }
     return construct_paras
@@ -100,7 +100,7 @@ def create_table_weird_data() -> bool:
         "table_name" : "weird_data",
         "columns" : {
             "id" : "BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT",
-            "attractions_id" : "BIGINT UNSIGNED UNIQUE KEY NOT NULL",
+            "attraction_id" : "BIGINT UNSIGNED UNIQUE KEY NOT NULL",
             "REF_WP" : "INT UNSIGNED",
             "langinfo" : "INT UNSIGNED NOT NULL",
             "MEMO_TIME" : "VARCHAR(5000)",
@@ -111,7 +111,7 @@ def create_table_weird_data() -> bool:
             "avEnd" : "DATE",
         },
         "foreign_key" : {
-            "attractions_id" : "attractions(id)",
+            "attraction_id" : "attractions(id)",
         },
     }
     return construct_paras
@@ -126,7 +126,34 @@ def create_table_auth() -> bool:
             "name" : "VARCHAR(255) NOT NULL",
             "email" : "VARCHAR(255) UNIQUE NOT NULL",
             "password" : "VARCHAR(255) NOT NULL",
-            # "INDEX" : "username_index (email)",
+            # "INDEX" : "email_index (email)",
+        },
+    }
+    return construct_paras
+
+
+def create_table_booking() -> bool:
+    construct_paras = {
+        "table_name" : "booking",
+        "columns" : {
+            "id" : "BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT",
+            "auth_id" : "BIGINT UNSIGNED NOT NULL",
+            "attraction_id" : "BIGINT UNSIGNED NOT NULL",
+            "date" : "VARCHAR(255) NOT NULL",
+            "time" : "VARCHAR(255) NOT NULL",
+            "price" : "INT NOT NULL",
+            "INDEX" : "index_auth_id (auth_id)",
+        },
+        "unique" : {
+            "unique_booking" : { # Constraint Key Name
+                "columns": "auth_id, date, time", # Multiple Columns Name
+                "using" : None, # Using Index 
+                "where" : None, # Where, where the columns should be constrain
+            },
+        },
+        "foreign_key" : {
+            "auth_id" : "auth(id)",
+            "attraction_id" : "attractions(id)",
         },
     }
     return construct_paras

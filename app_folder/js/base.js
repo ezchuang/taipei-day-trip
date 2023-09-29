@@ -1,22 +1,39 @@
+let verified = true
+
 // 網頁轉跳 for div
 function linkToUrl(url){
     window.location.href = url;
 }
 
 
+// 暫停
+function sleep(time){
+    return new Promise(resolve => setTimeout(resolve, time))
+}
+
+
+// del cookie
+function delCookie(key) {
+    var date = new Date();
+    date.setTime(date.getTime() - 1000);
+    document.cookie = `${key}='';expires=${date.toGMTString()}`;
+}
+
+
 // 按鈕修改
 function signinJudge(success){
-    inpPageBtn = document.querySelector("#signin")
+    let inpPageBtn = document.querySelector("#signin")
     if (! success){
+        verified = false
         inpPageBtn.textContent = `登入/註冊`
         inpPageBtn.removeEventListener("click", logout)
         inpPageBtn.addEventListener("click", createSignin)
         return
     }
+    verified = true
     inpPageBtn.textContent = `登出系統`
     inpPageBtn.removeEventListener("click", createSignin)
     inpPageBtn.addEventListener("click", logout)
-
 }
 
 
@@ -205,7 +222,7 @@ function logout(){
 
 // 註冊
 async function signup(){
-    formInnerFrame = document.querySelector(".formInnerFrame")
+    let formInnerFrame = document.querySelector(".formInnerFrame")
     let name = formInnerFrame.querySelector("#nameIpt").value
     let email = formInnerFrame.querySelector("#emailIpt").value
     let password = formInnerFrame.querySelector("#pwIpt").value
@@ -226,7 +243,7 @@ async function signup(){
         errMsg("請輸入密碼")
         return
     }
-    signupResult = await fetch("/api/user", {
+    let signupResult = await fetch("/api/user", {
         method : "POST",
         body : JSON.stringify({
             "name" : name,
@@ -248,7 +265,7 @@ async function signup(){
 
 // 登入頁面
 async function signin(){
-    formInnerFrame = document.querySelector(".formInnerFrame")
+    let formInnerFrame = document.querySelector(".formInnerFrame")
     let email = formInnerFrame.querySelector("#emailIpt").value
     let password = formInnerFrame.querySelector("#pwIpt").value
     if (! email){
@@ -258,7 +275,7 @@ async function signin(){
         errMsg("請輸入密碼")
         return
     }
-    tokenData = await fetch("/api/user/auth", {
+    let userData = await fetch("/api/user/auth", {
         method : "PUT",
         body : JSON.stringify({
             "email" : email,
@@ -268,14 +285,21 @@ async function signin(){
             "Content-Type" : "application/json",
         }
     })
-    tokenData = await tokenData.json()
-    if (tokenData.hasOwnProperty("error")){
-        errMsg(tokenData.message)
+    userData = await userData.json()
+    if (userData.hasOwnProperty("error")){
+        errMsg(userData.message)
+        localStorage.clear()
         return
+    }else{
+        errMsg("登入成功")
     }
-    localStorage.setItem("token", tokenData.token)
+    localStorage.setItem("token", userData.token)
+
+    await sleep(1000)
+
     removeSigninupPage()
     signinJudge(true)
+    verifyUser()
 }
 
 
@@ -284,9 +308,9 @@ async function verifyUser(){
     let tokenValue = localStorage.getItem("token")
     if (! tokenValue){
         signinJudge(false)
-        return
+        return false
     }
-    userData = await fetch("/api/user/auth", {
+    let userData = await fetch("/api/user/auth", {
         method : "GET",
         headers :{
             "Authorization" : `Bearer ${tokenValue}`,
@@ -295,17 +319,43 @@ async function verifyUser(){
     userData = await userData.json()
     if (! userData.data){
         signinJudge(false)
-        return
+        return false
     }
-    document.cookie = `userData=${userData.data}`
+    document.cookie = `name=${userData.data.name}; `
     signinJudge(true)
+            
+    return true
+}
+
+
+// fetch to url
+function fetchPackager({
+    urlFetch="/", 
+    methodFetch="GET", 
+    headersFetch={
+        "Authorization":`Bearer ${localStorage.getItem("token")}`,
+        "Content-Type":"application/json",
+        }, 
+    bodyFetch=null}){
+
+    let res = fetch(urlFetch, {
+        method : methodFetch,
+        headers : headersFetch,
+        body : bodyFetch
+    })
+    return res
 }
 
 
 // 監聽事件
-document.addEventListener("DOMContentLoaded", () => {
-    verifyUser()
+document.addEventListener("DOMContentLoaded", async () => {
+    await verifyUser()
 })
-// form.addEventListener("submit", async function(event) {
-//     event.preventDefault();
-// })
+document.querySelector("#bookingPageBtn").addEventListener("click", () => {
+    if (! verified){
+        createSignin()
+    }else{
+        url = "/booking"
+        linkToUrl(url)
+    }
+})

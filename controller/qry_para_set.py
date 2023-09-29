@@ -12,8 +12,8 @@ def attractions_list(page:int, keyword:str) -> str:
             GROUP_CONCAT(files.file_url SEPARATOR ',') AS images",
         "table" : "attractions LEFT JOIN mrts ON attractions.mrt_id = mrts.id \
             LEFT JOIN cats ON attractions.cat_id = cats.id \
-            LEFT JOIN locs ON attractions.id = locs.attractions_id \
-            LEFT JOIN files ON attractions.id = files.attractions_id",
+            LEFT JOIN locs ON attractions.id = locs.attraction_id \
+            LEFT JOIN files ON attractions.id = files.attraction_id",
         "where" : None,
         "group_by" : "attractions.id",
         "order_by" : None,
@@ -43,8 +43,8 @@ def attractions_one(attractionId:int) -> str:
             GROUP_CONCAT(files.file_url) AS images",
         "table" : "attractions LEFT JOIN mrts ON attractions.mrt_id = mrts.id \
             LEFT JOIN cats ON attractions.cat_id = cats.id \
-            LEFT JOIN locs ON attractions.id = locs.attractions_id \
-            LEFT JOIN files ON attractions.id = files.attractions_id",
+            LEFT JOIN locs ON attractions.id = locs.attraction_id \
+            LEFT JOIN files ON attractions.id = files.attraction_id",
         "where" : "attractions.id = %s",
         "group_by" : "attractions.id",
         "order_by" : None,
@@ -108,6 +108,53 @@ def verify(decoded_data:dict):
     return command_paras
 
 
+def booking_get(user_id):
+    # GROUP_CONCAT(files.file_url SEPARATOR ',') AS images,
+    command_paras = {
+        "columns" : "booking.id as booking_id, \
+            booking.attraction_id as id, \
+            attractions.name as name, \
+            locs.address as address, \
+            GROUP_CONCAT(files.file_url) AS images, \
+            booking.date as date, \
+            booking.time as time, \
+            booking.price as price",
+        "table" : "auth LEFT JOIN booking ON auth.id = booking.auth_id \
+            LEFT JOIN attractions ON booking.attraction_id = attractions.id \
+            LEFT JOIN locs ON attractions.id = locs.attraction_id \
+            LEFT JOIN files ON attractions.id = files.attraction_id",
+        "where" : "auth.id = %s",
+        "group_by" : "booking.id",
+        "order_by" : "booking.id",
+        "order_ordered" : "ASC",
+        "limit" : None,
+        "target" : (user_id,)
+    }
+    return command_paras
+    
+
+def booking_post(user_id, input_data):
+    data = (user_id,
+            input_data["attractionId"],
+            input_data["date"],
+            input_data["time"],
+            input_data["price"],)
+    command_paras = {"table": "booking",
+                     "columns": "auth_id, attraction_id, date, time, price",
+                     "values": "%s, %s, %s, %s, %s",
+                     "target" : data}
+    return command_paras
+
+
+def booking_del(user_id, input_data):
+    data = (input_data["id"],
+            user_id,)
+    command_paras = {"table": "booking",
+                     "where": "id = %s and auth_id = %s",
+                     "target" : data}
+    return command_paras
+
+
 """
 OK 形式:
 
@@ -129,9 +176,9 @@ LEFT JOIN
 LEFT JOIN 
     cats ON attractions.cat_id = cats.id
 LEFT JOIN 
-    locs ON attractions.id = locs.attractions_id
+    locs ON attractions.id = locs.attraction_id
 LEFT JOIN 
-    files ON attractions.id = files.attractions_id
+    files ON attractions.id = files.attraction_id
 WHERE
 	mrts.mrt = '關渡' OR attractions.name LIKE '%關渡'
 GROUP BY

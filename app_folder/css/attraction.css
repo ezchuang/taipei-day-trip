@@ -34,37 +34,53 @@
     }
 }
 .imgFrame{
-    display: flex;
+    /* display: flex; */
     position: relative;
     height: 400px;
-    min-width: calc(50% - 60px);
+    width: calc(50% - 60px);
     margin: 15px;
+    overflow: hidden;
 }
 @media(max-width: 800px){
     .imgFrame{
-        margin: 0px;
+        width: calc(100% - 20px);
+        margin: auto;
     }
 }
 .imgInsertTarget{
-    overflow: hidden;
     display: flex;
     height: 100%;
     width: 100%;
-    position: absolute;
-    justify-content: center;
-    align-items: center;
-    top: 0px;
-    left: 0px;
-    flex: auto;
+    transform: translateX(-100%);
+    transition: transform 1s ease-in-out;
+}
+
+/* 待修改 */
+.imgInsertTarget::after{
+    transform: none;
+    transition: none;
 }
 .imgContainer{
+    flex: 0 0 auto;
+    height: 100%;
+    width: 100%;
+    border-radius: 5px;
+    border: 0px;
+}
+
+
+
+.imgTarget{
+    height: 100%;
+    width: 100%;
     object-fit: cover;
     object-position: center;
-    min-height: 100%;
     border-radius: 5px;
-    width: 0%;
-    display: none;
+    border: 0px;
 }
+
+
+
 @media(max-width: 800px){
     .imgContainer{
         border-radius: 0px;
@@ -221,7 +237,7 @@ input[type="date"]:placeholder-shown::content{
 .bookingDateInput::-webkit-calendar-picker-indicator{
     opacity: 0;
 }
-/* 待測 */
+/* 待測 <- 有 bug <- 是 bug */
 .bookingDateInput::-moz-calendar-picker-indicator{
     opacity: 0;
 }
@@ -259,6 +275,7 @@ input[type="date"]:placeholder-shown::content{
     width: 154px;
     height: 36px;
     border-radius: 5px;
+    border: 0px;
 }
 
 /* infos */
