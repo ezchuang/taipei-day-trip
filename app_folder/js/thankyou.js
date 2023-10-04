@@ -1,8 +1,10 @@
+let urlParams  = new URLSearchParams(window.location.search);
+let orderId = urlParams.get("number")
 // 宣告全域變數
 let dataList
 let totalPrice = 0
 
-function generateAttractionsBookingFrame(attractionFrame, data){
+function generateAttractionsOrdersFrame(attractionFrame, data){
     let attractionInsertTarget = document.createElement("div")
     attractionFrame.appendChild(attractionInsertTarget)
 
@@ -36,13 +38,6 @@ function generateAttractionsBookingFrame(attractionFrame, data){
     attractionInfo.appendChild(attractionTime)
     attractionTime.appendChild(attractionTimeLabel)
     attractionTime.appendChild(attractionTimeCnt)
-    // price
-    let attractionPrice = document.createElement("div")
-    let attractionPriceLabel = document.createElement("div")
-    let attractionPriceCnt = document.createElement("div")
-    attractionInfo.appendChild(attractionPrice)
-    attractionPrice.appendChild(attractionPriceLabel)
-    attractionPrice.appendChild(attractionPriceCnt)
     // location
     let attractionLoc = document.createElement("div")
     let attractionLocLabel = document.createElement("div")
@@ -51,16 +46,9 @@ function generateAttractionsBookingFrame(attractionFrame, data){
     attractionLoc.appendChild(attractionLocLabel)
     attractionLoc.appendChild(attractionLocCnt)
 
-    // delete button
-    let delImgFrame = document.createElement("div")
-    let delImg = document.createElement("img")
-    attractionInsertTarget.appendChild(delImgFrame)
-    delImgFrame.appendChild(delImg)
-
-
     // 賦予屬性
     attractionInsertTarget.classList.add("attractionInsertTarget")
-        // attractionInsertTarget.setAttribute("id", `booking${data.attraction.id}`)
+        // attractionInsertTarget.setAttribute("id", `Orders${data.attraction.id}`)
     // 圖片
     attractionImg.classList.add("attractionImg")
     attractionImgInsertTarget.classList.add("attractionImgInsertTarget")
@@ -71,8 +59,6 @@ function generateAttractionsBookingFrame(attractionFrame, data){
     attractionName.classList.add("attractionName")
     attractionName.classList.add("bold")
     attractionName.classList.add("cyanText")
-        // attractionNameLabel.classList.add("attractionNameLabel")
-        // attractionNameLabel.textContent = ""
     attractionNameCnt.classList.add("attractionNameCnt")
     attractionNameCnt.textContent = `台北一日遊： ${data.attraction.name}`
     // date
@@ -95,14 +81,6 @@ function generateAttractionsBookingFrame(attractionFrame, data){
     }else if(data.time === "afternoon"){
         attractionTimeCnt.textContent = "中午 12 點到下午 4 點"
     }
-    // price
-    attractionPrice.classList.add("attractionPrice")
-    attractionPriceLabel.classList.add("attractionPriceLabel")
-    attractionPriceLabel.classList.add("bold")
-    attractionPriceLabel.textContent = "費用："
-    attractionPriceCnt.classList.add("attractionPriceCnt")
-    attractionPriceCnt.classList.add("medium")
-    attractionPriceCnt.textContent = `新台幣 ${data.price} 元`
     // location
     attractionLoc.classList.add("attractionLoc")
     attractionLocLabel.classList.add("attractionLocLabel")
@@ -111,63 +89,44 @@ function generateAttractionsBookingFrame(attractionFrame, data){
     attractionLocCnt.classList.add("attractionLocCnt")
     attractionLocCnt.classList.add("medium")
     attractionLocCnt.textContent = data.attraction.address
-    // delete button
-    delImgFrame.classList.add("delImgFrame")
-    delImg.classList.add("delImg")
-    delImg.setAttribute("src", "/static/images/del.png")
-    delImgFrame.addEventListener("click", () => {
-        delBooking(attractionFrame, attractionInsertTarget, data.attraction.bookingId)
-    })
-}
-
-
-// 刪除按鈕
-async function delBooking(attractionFrame, delTarget, delId){
-    let bodyFetchData = JSON.stringify({
-        "id" : delId
-    })
-    let res = await fetchPackager({urlFetch:"/api/booking", methodFetch:"DELETE", bodyFetch:bodyFetchData})
-    res = await res.json()
-
-    if (res["error"]){
-        let bookingErrMsg = document.createElement("div")
-        delTarget.appendChild(bookingErrMsg)
-        bookingErrMsg.setAttribute("bookingErrMsg")
-        bookingErrMsg.textContent = res["message"]
-        return 
-    }
-    attractionFrame.removeChild(delTarget)
-    calculatePrice()
-    checkExistence()
 }
 
 
 // 刷新價格
 function calculatePrice(){
     let checkPriceCnt = document.querySelector(".checkPriceCnt")
-    let priceArr = document.querySelectorAll(".attractionPriceCnt")
-    for (let i=0; i<priceArr.length; i++){
-        totalPrice += Number(priceArr[i].textContent.split(" ")[1])
-    }
     checkPriceCnt.textContent = `新台幣 ${totalPrice} 元`
+}
+
+
+// 訂單使用者資料顯示
+function generateAttractionsOrdersUserData(rawData){
+    let userNameCnt = document.querySelector(".userNameCnt")
+    let userEmailCnt = document.querySelector(".userEmailCnt")
+    let userNumberCnt = document.querySelector(".userNumberCnt")
+    userNameCnt.textContent = rawData.data.contact.name
+    userEmailCnt.textContent = rawData.data.contact.email
+    userNumberCnt.textContent = rawData.data.contact.phone
 }
 
 
 // 有行程時注入
 async function insertData(){
-    let rawData = await fetchPackager({urlFetch:"/api/booking", methodFetch:"GET"})
+    let rawData = await fetchPackager({urlFetch:`/api/orders/${orderId}`, methodFetch:"GET"})
     rawData = await rawData.json()
 
     let titleName = document.querySelector(".titleName")
+    let titleOrderId = document.querySelector(".titleOrderId")
 
     let name = document.cookie
         .split("; ")
         .find((row) => row.startsWith("name="))
         ?.split("=")[1]
 
-    titleName.textContent = `您好，${name}，待預訂行程如下：`
+    titleName.textContent = `您好，${name} 行程如下：`
+    titleOrderId.textContent = `訂單編號： ${orderId}`
 
-    // 沒有預定行程
+    // 沒有行程
     if (! rawData.data){
         let innerFrame = document.querySelector(".innerFrame")
         let emptyMsg = document.querySelector(".emptyMsg")
@@ -176,27 +135,14 @@ async function insertData(){
         return
     }
 
-    dataList = rawData.data
-    // 有預定行程
+    dataList = rawData.data.trip
+    totalPrice = rawData.data.price
+    // 有行程
     let attractionFrame = document.querySelector(".attractionFrame")
     for (let i=0; i<dataList.length; i++){
-        generateAttractionsBookingFrame(attractionFrame, dataList[i])
+        generateAttractionsOrdersFrame(attractionFrame, dataList[i])
     }
-}
-
-
-// 檢驗是否尚有行程未下定
-function checkExistence(){
-    let attractionFrame = document.querySelector(".attractionFrame")
-
-    if (attractionFrame.children.length > 0){
-        return
-    }
-    let innerFrame = document.querySelector(".innerFrame")
-    let emptyMsg = document.querySelector(".emptyMsg")
-    innerFrame.style.display = "none"
-    emptyMsg.style.display = "flex"
-    return
+    generateAttractionsOrdersUserData(rawData)
 }
 
 

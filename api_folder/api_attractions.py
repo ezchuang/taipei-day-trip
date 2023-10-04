@@ -1,6 +1,5 @@
-from flask import ( Blueprint, request, session, current_app,
-                   request, jsonify)
-from datetime import datetime, timedelta
+from flask import ( Blueprint, request, jsonify)
+# from datetime import datetime, timedelta
 
 import module.flask_modules as flask_modules
 from controller import qry_para_set

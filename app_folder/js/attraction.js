@@ -195,7 +195,11 @@ async function addToBooking(){
         "time": time,
         "price": price
     })
-    let res = await fetchPackager({urlFetch:"/api/booking", methodFetch:"POST", bodyFetch:bodyFetchData}) // headers_fetch = default
+    let res = await fetchPackager({
+        urlFetch: "/api/booking", 
+        methodFetch: "POST", 
+        bodyFetch: bodyFetchData
+    }) // headersFetch = default
 
     // 輸出結果
     if (res.hasOwnProperty("error")){

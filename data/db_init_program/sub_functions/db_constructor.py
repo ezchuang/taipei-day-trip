@@ -30,6 +30,14 @@ def create_table_controller(db_connection_pool):
     # booking
     paras_table_booking = qry_para_set_db_constructor.create_table_booking()
     module_init_program.create_table(db_connection_pool, paras_table_booking)
+
+    # order
+    paras_table_orders = qry_para_set_db_constructor.create_table_orders()
+    module_init_program.create_table(db_connection_pool, paras_table_orders)
+
+    # order detail
+    paras_table_orders_detail = qry_para_set_db_constructor.create_table_orders_detail()
+    module_init_program.create_table(db_connection_pool, paras_table_orders_detail)
     
 
 def main():

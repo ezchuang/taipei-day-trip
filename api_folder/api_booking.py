@@ -1,9 +1,8 @@
-from flask import ( Blueprint, request, session, current_app,
-                   request, jsonify, redirect)
+from flask import ( Blueprint, request, jsonify, redirect)
 # from functools import wraps
-from datetime import datetime, timedelta
-import jwt
+# from datetime import datetime, timedelta
 
+from module import token
 from .api_user import secret_key
 import module.flask_modules as flask_modules
 from controller import qry_para_set
@@ -12,60 +11,13 @@ from controller import qry_para_set
 blueprint_booking = Blueprint('blueprint_booking', __name__, url_prefix ="/api")
 
 
-def token_required(func):
-    # @wraps(func)
-    def decorated():
-        res = {}
-        token = ""
-        http_code = 0
-        try:
-            if "Authorization" in request.headers:
-                authorization = request.authorization
-                token = authorization.token
-            if not token:
-                raise ValueError
-        
-            decoded_data = jwt.decode(token, secret_key, algorithms="HS256")
-            command_paras = qry_para_set.verify(decoded_data)
-            data = flask_modules.query_fetch_one(command_paras)
-
-            if not data:
-                raise ValueError
-            
-            http_code = 200
-            res = data
-
-            return func(res, http_code)
-        
-        except ValueError as err:
-            print("ValueError ", err)
-            msg = "未登入系統，拒絕存取"
-            http_code = 403
-            res = {
-                "error" : True,
-                "message": msg,
-            }
-            return func(res, http_code)
-        
-        except Exception as err:
-            print("Exception ", err)
-            msg = "伺服器內部錯誤"
-            http_code = 500
-            res = {
-                "error" : True,
-                "message": msg,
-            }
-            return func(res, http_code)
-            
-    return decorated
-
-
 # 預定行程
 @blueprint_booking.route("/booking", methods=["GET", "POST", "DELETE"])
-@token_required
-def signin(user_info, http_code):
+@token.token_required
+def booking(user_info, http_code):
     res = {}
 
+    # 驗證失敗
     if "error" in user_info:
         if http_code == 403:
             res = user_info

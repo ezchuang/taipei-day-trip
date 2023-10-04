@@ -1,3 +1,4 @@
+// 宣告全域變數
 let verified = true
 
 // 網頁轉跳 for div

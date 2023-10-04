@@ -157,3 +157,46 @@ def create_table_booking() -> bool:
         },
     }
     return construct_paras
+
+
+def create_table_orders() -> bool:
+    construct_paras = {
+        "table_name" : "orders",
+        # 測試一下auto increment
+        "columns" : {
+            "order_id" : "BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT",
+            "auth_id" : "BIGINT UNSIGNED NOT NULL",
+            "price" : "INT NOT NULL",
+            "name" : "VARCHAR(255) NOT NULL",
+            "email" : "VARCHAR(255) NOT NULL",
+            "phone" : "VARCHAR(255) NOT NULL",
+            "order_status" : "BOOLEAN NOT NULL",
+        },
+        "unique" : None,
+        "foreign_key" : {
+            "auth_id" : "auth(id)",
+        },
+    }
+    return construct_paras
+
+
+def create_table_orders_detail() -> bool:
+    construct_paras = {
+        "table_name" : "orders_detail",
+        # 測試一下auto increment
+        "columns" : {
+            "id" : "BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT",
+            "order_id" : "BIGINT UNSIGNED",
+            "attraction_id" : "BIGINT UNSIGNED NOT NULL",
+            "date" : "VARCHAR(255) NOT NULL",
+            "time" : "VARCHAR(255) NOT NULL",
+            "price" : "INT NOT NULL",
+            "INDEX" : "index_order_id (order_id)",
+        },
+        "unique" : None,
+        "foreign_key" : {
+            "order_id" : "orders(order_id)",
+            "attraction_id" : "attractions(id)",
+        },
+    }
+    return construct_paras
