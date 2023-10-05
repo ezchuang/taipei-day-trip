@@ -14,8 +14,8 @@ from controller import qry_para_set
 blueprint_orders = Blueprint('blueprint_orders', __name__, url_prefix ="/api")
 
 dotenv_path = 'partner_key.env'
+load_dotenv(dotenv_path)
 partner_key = os.getenv("PARTNER_KEY")
-
 
 # 下訂行程
 @blueprint_orders.route("/orders", methods=["POST"])
