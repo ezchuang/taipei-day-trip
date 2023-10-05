@@ -2,6 +2,8 @@ from flask import ( Blueprint, request, jsonify, redirect, current_app)
 # from functools import wraps
 from datetime import datetime
 import requests
+from dotenv import load_dotenv
+import os
 
 from module import token
 from .api_user import secret_key
@@ -10,6 +12,9 @@ from controller import qry_para_set
 
 
 blueprint_orders = Blueprint('blueprint_orders', __name__, url_prefix ="/api")
+
+dotenv_path = 'partner_key.env'
+partner_key = os.getenv("PARTNER_KEY")
 
 
 # 下訂行程
@@ -73,7 +78,7 @@ def orders_post(user_info, http_code):
         url = "https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime"
         body = {
             "prime": input_data["prime"],
-            "partner_key": "",
+            "partner_key": partner_key,
             "merchant_id": "Ezpay99_CTBC",
             "details": "TapPay Test",
             "amount": input_data["order"]["price"],
@@ -85,7 +90,7 @@ def orders_post(user_info, http_code):
         }
         headers = {
             "Content-Type": "application/json",
-            "x-api-key": ""
+            "x-api-key": partner_key
         }
         response = requests.post(url, headers=headers, json=body)
         response = response.json()
