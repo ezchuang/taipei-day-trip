@@ -63,33 +63,35 @@
             </div>
         </form>
         <hr/>
-        <form class="billFrame">
+        <form class="billFrame" id="billFrame" onsubmit="submitBillFrame(event)">
             <div class="billTitle button bold">信用卡付款資訊</div>
             <div class="billNumber">
                 <label class="billNumberLabel medium">卡片號碼：</label>
-                <input class="billNumberCnt medium inputbox" maxlength="16" minlength="16" required type="text" name="billNumber" placeholder="**** **** **** ****">
+                <div class="tpfield medium inputbox" id="card-number"></div>
             </div>
             <div class="billExp">
                 <label class="billExpLabel medium">過期時間：</label>
-                <input class="billExpCnt medium inputbox" maxlength="5" required type="text" name="billExp" placeholder="MM / YY">
+                <div class="tpfield medium inputbox" id="card-expiration-date"></div>
             </div>
             <div class="billPW">
                 <label class="billPWLabel medium">驗證密碼：</label>
-                <input class="billPWCnt medium inputbox" maxlength="3" minlength="3" required type="text" name="billPW" placeholder="CVV">
+                <div class="tpfield medium inputbox" id="card-ccv"></div>
             </div>
         </form>
         <hr/>
         <div class="checkFrame">
             <div class="checkPrice bold">
                 <div class="checkPriceLabel">總價：</div>
-                <div class="checkPriceCnt">1231231</div>
+                <div class="checkPriceCnt"></div>
             </div>
-            <div class="checkBtn button whiteText cyanBg">確認訂單並付款</div>
+            <button class="checkBtn button whiteText cyanBg" form="billFrame" type="submit">確認訂單並付款</button>
         </div>
     </div>
 </div>
 {% endblock %}
 
 {% block script %}
+<script src="https://js.tappaysdk.com/sdk/tpdirect/v5.14.0"></script>
 <script src="/static/js/booking.js"></script>
+<script src="/static/js/order.js"></script>
 {% endblock %}

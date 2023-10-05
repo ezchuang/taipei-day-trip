@@ -14,6 +14,7 @@ def get_connection(func) -> bool:
             return func(db_connection, db_cursor, paras)
         except Exception as err:
             print(err)
+            print(type(err))
             db_connection.rollback()
             return False
         finally:

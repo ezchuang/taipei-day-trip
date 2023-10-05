@@ -59,12 +59,11 @@ async function insertElement(currentId){
     let textAttractionTraffic = document.createTextNode(data_target.transport)
     infosTraffic.appendChild(textAttractionTraffic)
 
-    
-    imageArr = data_target.images
-    imgAmount = imageArr.length // 全域變數: 共幾張圖
+    imgAmount = data_target.images.length // 全域變數: 共幾張圖
 
     let imgInsertTarget = document.querySelector("#imgInsertTarget")
-    imgInsertTarget.style.left = imgInsertTarget.offsetWidth
+    windowWidth = imgInsertTarget.offsetWidth
+
     if (imgAmount < 2){ // 只有一張圖
         currentImgNum = 0
         document.querySelector(".leftContainer").style.display = "none"
@@ -80,6 +79,9 @@ async function insertElement(currentId){
         img.setAttribute("id", `img0`)
         img.setAttribute("alt", `img0`)
         img.setAttribute("src", images[currentImgNum])
+
+        // 全域變數
+        imageArr.push(imgDiv)
         return 
     }
     if (imgAmount < 1){ // 沒有圖
@@ -89,19 +91,26 @@ async function insertElement(currentId){
         div.setAttribute("class", "errorMsg")
         return
     }
-        
-    for (let i = 0; i < 3; i++){
-        currentImgNum = 0
-
+    // 主結構
+    currentImgNum = 0
+    for (let i = 0; i < imgAmount; i++){
         let imgDiv = document.createElement("div")
         let img = document.createElement("img")
         imgInsertTarget.appendChild(imgDiv)
         imgDiv.appendChild(img)
         imgDiv.classList.add("imgContainer")
         img.classList.add("imgTarget")
-        
+        img.setAttribute("alt", `img${i}`)
         img.setAttribute("id", `img${i}`)
+        img.setAttribute("src", data_target.images[i])
+
+        // 全域變數
+        imageArr.push(imgDiv)
+        
+        imgDiv.style.transform = `translate3D(${ i * windowWidth }px, 0px, 0px)`
     }
+    imageArr[imgAmount-1].style.transform = `translate3D(${ -1 * windowWidth }px, 0px, 0px)`
+    
     for (let i = 0; i < imgAmount; i++){
         // 插入小圓點
         let imgPositionCircleButton = document.querySelector("#imgPositionCircleButton")
@@ -110,54 +119,38 @@ async function insertElement(currentId){
         imgButton.classList.add("imgButtonWhite")
         imgButton.setAttribute("id", `imgButton${String(i)}`)
     }
-    for (let i = 0; i < 3; i++){
-        // 注意!!!
-        let img = document.querySelector(`#img${i}`)
-        let index = ((i -1 + imgAmount) % imgAmount)
-        img.setAttribute("alt", `img${index}`)
-        img.setAttribute("src", imageArr[index])
-    }
     switchButton()
 }
 
 
 // 圖片移動動畫 與 圖片切換
-function moveImg(next){
-    let imgInsertTarget = document.querySelector(`.imgInsertTarget`)
-    let translateValue = next * 100 - 100
-    imgInsertTarget.style.transform = `translateX(${translateValue}%)`
-}
-
-
-// 圖片位置校正
-function switchImg(next){
-    for (let i = 0; i < 3; i++){
-        let imgCurrent = document.querySelector(`#img${i}`)
-        imgCurrent.setAttribute("src", imageArr[((next + i - 1 + imgAmount) % imgAmount)])
-        
+async function moveImg(next){
+    if (next === "right"){
+        imageArr.push(imageArr.shift())
+        for (let i = 0; i < imgAmount; i++){
+            imageArr[i].style.transform = `translate3D(${ i * windowWidth }px, 0px, 0px)`
+        }
+        imageArr[imgAmount-1].style.transform = `translate3D(${ -1 * windowWidth }px, 0px, 0px)`
+        currentImgNum = Number(imageArr[0].firstChild.id.slice(3))
+        return
     }
-    let imgInsertTarget = document.querySelector(`.imgInsertTarget`)
-    // imgInsertTarget.style.transition = "none"
-    // imgInsertTarget.style.transform = `none`
-    // imgInsertTarget.style.transform = `translateX(-100%)`
-    // imgInsertTarget.style.transition = "transform 1s ease-in-out"
+    imageArr.unshift(imageArr.pop())
+    for (let i = 0; i < imgAmount; i++){
+        imageArr[i].style.transform = `translate3D(${ i * windowWidth }px, 0px, 0px)`
+    }
+    imageArr[imgAmount-1].style.transform = `translate3D(${ -1 * windowWidth }px, 0px, 0px)`
+    currentImgNum = Number(imageArr[0].firstChild.id.slice(3))
 }
 
 
 // MrtList 左鍵行為
 async function arrowLeft(){
-    currentImgNum = (currentImgNum - 1 + imgAmount) % imgAmount
-    moveImg(1) // 行為是右移
-    await sleep(1000)
-    switchImg(currentImgNum)
+    await moveImg("left") // 行為是右移
     switchButton()
 }
 // MrtList 右鍵行為
 async function arrowRight(){
-    currentImgNum = (currentImgNum + 1 + imgAmount) % imgAmount
-    moveImg(-1) // 行為是左移
-    await sleep(1000)
-    switchImg(currentImgNum)
+    await moveImg("right") // 行為是左移
     switchButton()
 }
 
@@ -202,7 +195,11 @@ async function addToBooking(){
         "time": time,
         "price": price
     })
-    let res = await fetchPackager({urlFetch:"/api/booking", methodFetch:"POST", bodyFetch:bodyFetchData}) // headers_fetch = default
+    let res = await fetchPackager({
+        urlFetch: "/api/booking", 
+        methodFetch: "POST", 
+        bodyFetch: bodyFetchData
+    }) // headersFetch = default
 
     // 輸出結果
     if (res.hasOwnProperty("error")){

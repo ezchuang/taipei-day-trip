@@ -155,6 +155,98 @@ def booking_del(user_id, input_data):
     return command_paras
 
 
+def booking_get_for_order(user_id):
+    command_paras = {
+        "columns" : "booking.id as booking_id, \
+            booking.attraction_id as id, \
+            booking.date as date, \
+            booking.time as time, \
+            booking.price as price",
+        "table" : "auth LEFT JOIN booking ON auth.id = booking.auth_id",
+        "where" : "auth.id = %s",
+        "group_by" : None,
+        "order_by" : "booking.id",
+        "order_ordered" : "ASC",
+        "limit" : None,
+        "target" : (user_id,)
+    }
+    return command_paras
+
+
+def orders_post_orders(order_id, user_id, input_data):
+    data = (order_id,
+            user_id,
+            input_data["order"]["price"],
+            input_data["order"]["contact"]["name"],
+            input_data["order"]["contact"]["email"],
+            input_data["order"]["contact"]["phone"],
+            0)
+    command_paras = {"table": "orders",
+                     "columns": "order_id, auth_id, price, name, email, phone, order_status",
+                     "values": "%s, %s, %s, %s, %s, %s, %s",
+                     "target" : data}
+    return command_paras
+
+
+def orders_post_orders_detail(order_id, db_data_sep):
+    data = (order_id,
+            db_data_sep["id"],
+            db_data_sep["date"],
+            db_data_sep["time"],
+            db_data_sep["price"])
+    command_paras = {"table": "orders_detail",
+                     "columns": "order_id, attraction_id, date, time, price",
+                     "values": "%s, %s, %s, %s, %s",
+                     "target" : data}
+    return command_paras
+
+
+def orders_set_delete_booking(user_id):
+    data = (user_id,)
+    command_paras = {"table": "booking",
+                     "where": "auth_id = %s",
+                     "target" : data}
+    return command_paras
+
+
+def orders_set_update_orders(order_id):
+    data = (1, order_id,)
+    command_paras = {"table": "orders",
+                     "set": "order_status = %s",
+                     "where": "order_id = %s",
+                     "target" : data}
+    return command_paras
+
+
+def orders_get(user_id, order_id):
+    command_paras = {
+        "columns" : "orders.order_id as number, \
+            orders.price as price, \
+            orders_detail.attraction_id as id, \
+            attractions.name as attraction_name, \
+            locs.address as address, \
+            GROUP_CONCAT(files.file_url) AS images, \
+            orders_detail.date as date, \
+            orders_detail.time as time, \
+            orders.name as name, \
+            orders.email as email, \
+            orders.phone as phone, \
+            orders.order_status as status",
+        "table" : "auth LEFT JOIN orders ON auth.id = orders.auth_id \
+            LEFT JOIN orders_detail ON orders.order_id = orders_detail.order_id \
+            LEFT JOIN attractions ON orders_detail.attraction_id = attractions.id \
+            LEFT JOIN locs ON attractions.id = locs.attraction_id \
+            LEFT JOIN files ON attractions.id = files.attraction_id",
+        "where" : "auth.id = %s and orders.order_id = %s",
+        "group_by" : "orders_detail.id",
+        "order_by" : "orders_detail.id",
+        "order_ordered" : "ASC",
+        "limit" : None,
+        "target" : (user_id, order_id)
+    }
+    return command_paras
+
+
 """
 OK 形式:
 

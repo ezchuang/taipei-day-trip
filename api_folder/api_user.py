@@ -1,51 +1,17 @@
-from flask import ( Blueprint, request, session, current_app,
-                   request, jsonify)
+from flask import ( Blueprint, request, jsonify)
 from datetime import datetime, timedelta
 # import random, string
-
 import jwt
 
 import module.flask_modules as flask_modules
 from controller import qry_para_set
 
 
-# blueprint = Blueprint('blueprint123', __name__, url_prefix ="/api", static_folder="api", static_url_path="/api")
 blueprint_user = Blueprint('blueprint_user', __name__, url_prefix ="/api")
+
 
 secret_key = "oQAQByzarbxzNYSvuP3V4sdZyfKqxeHq"
 # secret_key = "".join(random.choice(string.ascii_letters + string.digits) for i in range(32))
-
-
-# api 全部都需要驗證
-# @blueprint.before_request
-# def before_request_bp():
-#     if not session.get("signin"):
-#         res = {
-#             "error": True,
-#             "message": "尚未登入"
-#         }
-#         return jsonify(res), 400
-
-
-# def token_required(func):
-#     @wrap(func)
-#     def wrap():
-#         token = None
-#         if "Authorization" in request.headers:
-#             token = request.headers["Authorization"].split(" ")[1]
-#         input_data = request.get_json()
-#         if not token:
-#             raise ValueError
-#         decoded_data = jwt.decode(token, secret_key, algorithms="HS256")
-#         command_paras = qry_para_set.verify(decoded_data)
-#         data = flask_modules.query_fetch_one(command_paras)
-#         if not data:
-#             raise ValueError
-#         res = {
-#             "data": data
-#         }
-#         return jsonify(res), 200
-#     return wrap
 
 
 # 會員註冊
