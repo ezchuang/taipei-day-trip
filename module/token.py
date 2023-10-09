@@ -1,10 +1,9 @@
 from flask import request
 from functools import wraps
-# from datetime import datetime, timedelta
 import jwt
 
-from api_folder.api_user import secret_key
-import module.flask_modules as flask_modules
+from controller.api_folder.api_user import secret_key
+import module.operate_db as operate_db
 from controller import qry_para_set
 
 
@@ -23,7 +22,7 @@ def token_required(func):
         
             decoded_data = jwt.decode(token, secret_key, algorithms="HS256")
             command_paras = qry_para_set.verify(decoded_data)
-            data = flask_modules.query_fetch_one(command_paras)
+            data = operate_db.query_fetch_one(command_paras)
 
             if not data:
                 raise ValueError
@@ -71,7 +70,7 @@ def token_required_special(func):
         
             decoded_data = jwt.decode(token, secret_key, algorithms="HS256")
             command_paras = qry_para_set.verify(decoded_data)
-            data = flask_modules.query_fetch_one(command_paras)
+            data = operate_db.query_fetch_one(command_paras)
 
             if not data:
                 raise ValueError

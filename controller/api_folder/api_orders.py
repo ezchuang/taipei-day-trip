@@ -1,13 +1,11 @@
-from flask import ( Blueprint, request, jsonify, redirect, current_app)
-# from functools import wraps
+from flask import ( Blueprint, request, jsonify, redirect)
 from datetime import datetime
 import requests
 from dotenv import load_dotenv
 import os
 
 from module import token
-from .api_user import secret_key
-import module.flask_modules as flask_modules
+import module.operate_db as operate_db
 from controller import qry_para_set
 
 
@@ -39,7 +37,7 @@ def orders_post(user_info, http_code):
 
         # 檢查輸入資訊
         command_paras = qry_para_set.booking_get_for_order(user_info["id"])
-        db_data = flask_modules.query_fetch_all(command_paras)
+        db_data = operate_db.query_fetch_all(command_paras)
         for i in range(len(db_data)):
             total_price -= db_data[i]["price"]
             if total_price < 0:
@@ -63,14 +61,14 @@ def orders_post(user_info, http_code):
 
         # 寫入 orders
         command_paras = qry_para_set.orders_post_orders(order_id, user_info["id"], input_data)
-        sql_res = flask_modules.query_create(command_paras)
+        sql_res = operate_db.query_create(command_paras)
         if not sql_res:
             raise ValueError("failed to create order")
         
         # 寫入 orders detail
         for db_data_sep in db_data:
             command_paras = qry_para_set.orders_post_orders_detail(order_id, db_data_sep)
-            sql_res = flask_modules.query_create(command_paras)
+            sql_res = operate_db.query_create(command_paras)
             if not sql_res:
                 raise ValueError("failed to create order")
         
@@ -100,11 +98,11 @@ def orders_post(user_info, http_code):
 
         # 刪除暫存之預定資料
         command_paras = qry_para_set.orders_set_delete_booking(user_info["id"])
-        db_data = flask_modules.query_del(command_paras)
+        db_data = operate_db.query_del(command_paras)
 
         # 更新訂單狀態
         command_paras = qry_para_set.orders_set_update_orders(order_id)
-        db_data = flask_modules.query_update(command_paras)
+        db_data = operate_db.query_update(command_paras)
 
         res = {
             "data" : {
@@ -144,7 +142,7 @@ def orders_get(user_info, http_code, order_id=None):
     # 依據 order id 取得 order info
     try:
         command_paras = qry_para_set.orders_get(user_info["id"], order_id)
-        data = flask_modules.query_fetch_all(command_paras)
+        data = operate_db.query_fetch_all(command_paras)
         # 上面挑戰減少 access DB 次數，下面要重新組裝
         price = data[0]["price"]
         name = data[0]["name"]

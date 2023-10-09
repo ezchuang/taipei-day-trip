@@ -1,10 +1,7 @@
 from flask import ( Blueprint, request, jsonify, redirect)
-# from functools import wraps
-# from datetime import datetime, timedelta
 
 from module import token
-from .api_user import secret_key
-import module.flask_modules as flask_modules
+import module.operate_db as operate_db
 from controller import qry_para_set
 
 
@@ -28,7 +25,7 @@ def booking(user_info, http_code):
     if request.method == "GET":
         try:
             command_paras = qry_para_set.booking_get(user_info["id"])
-            data = flask_modules.query_fetch_all(command_paras)
+            data = operate_db.query_fetch_all(command_paras)
             # 上面挑戰減少 access DB 次數，下面要重新組裝
             for index in range(len(data)):
                 data[index] = {
@@ -65,7 +62,7 @@ def booking(user_info, http_code):
         try:
             input_data["attractionId"]
             command_paras = qry_para_set.booking_post(user_info["id"], input_data)
-            data = flask_modules.query_create(command_paras)
+            data = operate_db.query_create(command_paras)
             res = {"ok" : True}
             return jsonify(res), 200
         
@@ -83,7 +80,7 @@ def booking(user_info, http_code):
         input_data = request.get_json()
         try:
             command_paras = qry_para_set.booking_del(user_info["id"], input_data)
-            data = flask_modules.query_del(command_paras)
+            data = operate_db.query_del(command_paras)
             res = {
                 "ok" : True,
             }

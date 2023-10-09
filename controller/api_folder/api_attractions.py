@@ -1,7 +1,6 @@
 from flask import ( Blueprint, request, jsonify)
-# from datetime import datetime, timedelta
 
-import module.flask_modules as flask_modules
+import module.operate_db as operate_db
 from controller import qry_para_set
 
 
@@ -15,12 +14,12 @@ def attractions_list():
         page = int(request.args.get("page"))
         keyword = request.args.get("keyword")
         
-        # 使用者亂搞
+        # 防止使用者亂搞
         if page == None:
             raise ValueError
 
         command_paras = qry_para_set.attractions_list(page, keyword)
-        data = flask_modules.query_fetch_all(command_paras)
+        data = operate_db.query_fetch_all(command_paras)
         # 跟 DB 要 13 筆資料，若資料數小於等於 12，則此輪為最後一輪
         if len(data) <= 12:
             page = None
@@ -62,7 +61,7 @@ def attractions_list():
 def attractions_one(attractionId):
     try:
         command_paras = qry_para_set.attractions_one(attractionId)
-        data = flask_modules.query_fetch_one(command_paras)
+        data = operate_db.query_fetch_one(command_paras)
         data["images"] = data["images"].split(",")
         res = {
             "data" : data
@@ -93,7 +92,7 @@ def attractions_one(attractionId):
 def mrts_list():
     try:
         command_paras = qry_para_set.mrts_list()
-        data = flask_modules.query_fetch_all(command_paras)
+        data = operate_db.query_fetch_all(command_paras)
         for index in range(len(data)):
             data[index] = data[index]["mrt"]
         res = {

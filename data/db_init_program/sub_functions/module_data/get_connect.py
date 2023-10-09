@@ -1,4 +1,3 @@
-import ast
 import os
 from dotenv import load_dotenv
 import mysql.connector
@@ -28,13 +27,13 @@ def create_pool(db_config):
 
 # 建立 與 DB 的連線(嘗試密碼)
 def access_db():
-    load_dotenv()
+    dotenv_path = 'init_db_infos.env'
+    load_dotenv(dotenv_path)
     try:
         db_config = {
             "host": os.getenv("HOST"),
             "username": os.getenv("DB_USERNAME"),
             "password": os.getenv("DB_PASSWORD"),
-            # "database": os.getenv("DATABASE"),
         }
         return create_pool(db_config)
     except mysql.connector.errors.ProgrammingError as err:

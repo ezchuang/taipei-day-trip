@@ -31,7 +31,8 @@ def create_pool(db_config):
 
 # 建立 與 DB 的連線(嘗試密碼)
 def access_db():
-    load_dotenv()
+    dotenv_path = 'db_infos.env'
+    load_dotenv(dotenv_path)
     try:
         db_config = {
             "host": os.getenv("HOST"),
