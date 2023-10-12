@@ -6,12 +6,12 @@
 - 採用 MVC 架構 + RestAPI 設計風格 + 盡可能朝 CSR 編撰
   
 # 我的特色如下:
-此為 Camp 共同作業(大家都一樣)，我的特色如下:
+此為 Camp 的共同作業，我的這份特色如下:
 1. 參數化 Raw SQL 指令，使用 Python script 建立 Schema and tables，且 Flask access API 時也套用同一套方法訪問資料庫。優點是: 
     - 用同一套系統管理資料架構，減少介面
     - 集中個別對於資料庫的動作參數，方便比較與修改
-2. 目前 DB 中數據量不大，search (select) 時盡量減少 access DB 的次數，減少重複從 connection pool 中取得 connection 所花的 I/O 時間
-3. *unfinished*
+2. 目前 DB 中數據量不大，search (select) 時嘗試盡量減少 access DB 的次數，減少重複從 connection pool 中取得 connection 所花的 I/O 時間
+3. 不使用框架完成圖片輪轉動畫
 
 ## 初始化 程式 與 模組安裝:
   - ubuntu apt 更新: `sudo apt update`
