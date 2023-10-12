@@ -32,9 +32,9 @@ function signinJudge(success){
         return
     }
     verified = true
-    inpPageBtn.textContent = `登出系統`
+    inpPageBtn.textContent = `既存訂單`
     inpPageBtn.removeEventListener("click", createSignin)
-    inpPageBtn.addEventListener("click", logout)
+    inpPageBtn.addEventListener("click", orders)
 }
 
 
@@ -221,6 +221,13 @@ function logout(){
 }
 
 
+// 訂單頁轉跳
+function orders(){
+    url = "/orders"
+    linkToUrl(url)
+}
+
+
 // 註冊
 async function signup(){
     let formInnerFrame = document.querySelector(".formInnerFrame")
@@ -319,6 +326,7 @@ async function verifyUser(){
     })
     userData = await userData.json()
     if (! userData.data){
+        localStorage.removeItem('token');
         signinJudge(false)
         return false
     }
@@ -350,8 +358,18 @@ function fetchPackager({
 
 // 監聽事件
 document.addEventListener("DOMContentLoaded", async () => {
+    // 讓換面轉跳留給 JS function 控制
+    var links = document.querySelectorAll("a");
+    for (var i = 0; i < links.length; i++) {
+        links[i].addEventListener("click", function(event) {
+            event.preventDefault();
+        });
+    }
+
+    // 驗證是否登入
     await verifyUser()
 })
+
 document.querySelector("#bookingPageBtn").addEventListener("click", () => {
     if (! verified){
         createSignin()

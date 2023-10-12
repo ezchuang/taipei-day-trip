@@ -15,6 +15,40 @@ dotenv_path = 'partner_key.env'
 load_dotenv(dotenv_path)
 partner_key = os.getenv("PARTNER_KEY")
 
+
+# 取得所有已下訂行程
+@blueprint_orders.route("/orders", methods=["GET"])
+@token.token_required
+def orders_get_all(user_info, http_code):
+    res = {}
+
+    # 驗證失敗
+    if "error" in user_info:
+        if http_code == 403:
+            res = user_info
+            return redirect("/")
+        return jsonify(res), http_code
+
+    # 取得所有 order info
+    try:
+        command_paras = qry_para_set.orders_get_all(user_info["id"])
+        data = operate_db.query_fetch_all(command_paras)
+
+        res = {
+            "data": data,
+        }
+        http_code = 200
+        return jsonify(res), http_code
+    
+    except Exception as err:
+        print(err)
+        res = {
+            "data": None,
+        }
+        http_code = 200
+        return jsonify(res), http_code
+
+
 # 下訂行程
 @blueprint_orders.route("/orders", methods=["POST"])
 @token.token_required
@@ -120,8 +154,8 @@ def orders_post(user_info, http_code):
         print("ERROR: ", err)
         msg = "訂單建立失敗，輸入不正確或其他原因"
         res = {
-            "error" : True,
-            "message" : msg,
+            "error": True,
+            "message": msg,
         }
         return jsonify(res), 400
 
@@ -180,8 +214,7 @@ def orders_get(user_info, http_code, order_id=None):
     except Exception as err:
         print(err)
         res = {
-            "data" : None,
+            "data": None,
         }
         http_code = 200
         return jsonify(res), http_code
-

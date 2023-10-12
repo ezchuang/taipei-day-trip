@@ -1,7 +1,7 @@
 from flask import request
 from functools import wraps
-import jwt
 
+import jwt
 from controller.api_folder.api_user import secret_key
 import module.operate_db as operate_db
 from controller import qry_para_set

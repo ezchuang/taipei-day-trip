@@ -9,7 +9,7 @@ from module import get_connection
 app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
-app.static_folder="app_folder"
+app.static_folder="view"
 
 app.json.ensure_ascii = False
 
@@ -33,6 +33,9 @@ def booking():
 @app.route("/thankyou")
 def thankyou():
 	return render_template("thankyou.html")
+@app.route("/orders")
+def orders():
+	return render_template("orders.html")
 
 
 app.config["DEBUG"] = True
