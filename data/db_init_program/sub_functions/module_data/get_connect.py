@@ -27,7 +27,7 @@ def create_pool(db_config):
 
 # 建立 與 DB 的連線(嘗試密碼)
 def access_db():
-    dotenv_path = 'init_db_infos.env'
+    dotenv_path = 'data/db_init_program/sub_functions/module_data/init_db_infos.env'
     load_dotenv(dotenv_path)
     try:
         db_config = {
@@ -35,6 +35,7 @@ def access_db():
             "username": os.getenv("DB_USERNAME"),
             "password": os.getenv("DB_PASSWORD"),
         }
+        print(db_config)
         return create_pool(db_config)
     except mysql.connector.errors.ProgrammingError as err:
         if err.errno != 1045:
