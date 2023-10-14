@@ -3,6 +3,7 @@ let currentId // 目前頁面景點編號
 let currentImgNum // 目前圖片編號
 let imgAmount // 共幾張圖
 let imageArr = [] // image array 儲存image 網址
+let flag = false // 圖片是否切換中
 
 
 // 抓網址 ID
@@ -26,17 +27,8 @@ function switchButton(){
 }
 
 
-async function preRelocation(){
-    for (let i = 0; i < imgAmount; i++){
-        imageArr[i].style.display = "block"
-        imageArr[i].style.zIndex = "auto"
-        imageArr[i].style.transition = "all 0.6s ease-in-out"
-    }
-    await sleep(20)
-}
-
-
-async function relocate(){
+function relocate(){
+    let windowWidth = imgInsertTarget.offsetWidth
     for (let i = 0; i < imgAmount; i++){
         imageArr[i].style.zIndex = "-1"
         imageArr[i].style.transform = `translate3D(${ (i - currentImgNum) * windowWidth }px, 0px, 0px)`
@@ -49,7 +41,22 @@ async function relocate(){
         imageArr[currentImgNum].style.zIndex = "auto"
         imageArr[imgAmount-1].style.transform = `translate3D(${ -1 * windowWidth }px, 0px, 0px)`
     }
-    await sleep(10)
+}
+
+
+function presetImgStyle(){
+    for (let i = 0; i < imgAmount; i++){
+        imageArr[i].style.display = "block" 
+        imageArr[i].style.zIndex = "auto"
+        imageArr[i].style.transition = "all 0.6s ease-in-out"
+    }
+}
+
+
+async function preRelocation(){
+    relocate()
+    await sleep(20)
+    presetImgStyle()
 }
 
 
@@ -66,6 +73,8 @@ async function mainSwitchImg(shiftNum, targetImgNum){
     if (shiftNum === 0){
         return 
     }
+
+    let windowWidth = imgInsertTarget.offsetWidth
     if ((shiftNum < 0 && targetImgNum < 0) ||
         (shiftNum === imgAmount-1 && targetImgNum === imgAmount-1) ){ // 左移邊界
         imageArr[imgAmount-1].style.transform = `translate3D(${ 0 * windowWidth }px, 0px, 0px)`
@@ -109,17 +118,17 @@ async function mainSwitchImg(shiftNum, targetImgNum){
 
 // 切換照片
 async function controlSwitchImg(targetImgNum){
-    document.querySelector("#arrowLeft").removeEventListener("click", arrowLeft)
-    document.querySelector("#arrowRight").removeEventListener("click", arrowRight)
+    if (flag ===true){
+        return
+    }
+    flag = true
 
     await preRelocation()
     await mainSwitchImg(targetImgNum - currentImgNum, targetImgNum)
-    await sleep(600)
-    await relocate()
+    await sleep(560)
     resetImgStyle()
 
-    document.querySelector("#arrowLeft").addEventListener("click", arrowLeft)
-    document.querySelector("#arrowRight").addEventListener("click", arrowRight)
+    flag = false
 }
 
 
@@ -152,7 +161,7 @@ async function insertElement(currentId){
     imgAmount = data_target.images.length // 全域變數: 共幾張圖
 
     let imgInsertTarget = document.querySelector("#imgInsertTarget")
-    windowWidth = imgInsertTarget.offsetWidth
+    let windowWidth = imgInsertTarget.offsetWidth
 
     if (imgAmount < 2){ // 只有一張圖
         currentImgNum = 0
@@ -196,8 +205,10 @@ async function insertElement(currentId){
 
         // 全域變數
         imageArr.push(imgDiv)
-        if (i < 2){
+        imgDiv.style.display = "none"
+        if (i < 1){
             imgDiv.style.zIndex = "auto"
+            imgDiv.style.display = "block"
             imgDiv.style.transform = `translate3D(${ i * windowWidth }px, 0px, 0px)`
         }else if (i === imgAmount - 1){
             imgDiv.style.zIndex = "auto"
