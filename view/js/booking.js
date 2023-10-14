@@ -146,6 +146,7 @@ async function delBooking(attractionFrame, delTarget, delId){
 function calculatePrice(){
     let checkPriceCnt = document.querySelector(".checkPriceCnt")
     let priceArr = document.querySelectorAll(".attractionPriceCnt")
+    totalPrice = 0
     for (let i=0; i<priceArr.length; i++){
         totalPrice += Number(priceArr[i].textContent.split(" ")[1])
     }
