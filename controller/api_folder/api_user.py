@@ -2,8 +2,7 @@ from flask import ( Blueprint, request, jsonify)
 from datetime import datetime, timedelta
 import jwt
 
-import module.operate_db as operate_db
-from controller import qry_para_set
+from modal.modal_folder import modal_user
 
 
 blueprint_user = Blueprint('blueprint_user', __name__, url_prefix ="/api")
@@ -23,8 +22,8 @@ def signup():
             not input_data.get("password"):
             raise ValueError
         
-        command_paras = qry_para_set.signup(input_data)
-        if not operate_db.query_create(command_paras):
+        data = modal_user.signup(input_data)
+        if not data:
             raise ValueError
         res = {
             "ok" : True
@@ -70,9 +69,8 @@ def signin():
             token = authorization.token 
             # JWT Module會自動驗證過期時間
             decoded_data = jwt.decode(token, secret_key, algorithms="HS256")
-            print(decoded_data)
-            command_paras = qry_para_set.verify(decoded_data)
-            data = operate_db.query_fetch_one(command_paras)
+
+            data = modal_user.verify(decoded_data)
 
             if not data:
                 raise ValueError
@@ -95,9 +93,10 @@ def signin():
                 "@" not in input_data["email"] or \
                 not input_data.get("password"):
                 raise ValueError
+            
             email = input_data.get("email")
-            command_paras = qry_para_set.signin(email)
-            data = operate_db.query_fetch_one(command_paras)
+            data = modal_user.signin(email)
+
             if not data or input_data.get("password") != data.get("password"):
                 raise ValueError
             payload = {

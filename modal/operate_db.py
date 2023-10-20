@@ -1,5 +1,5 @@
-from module import get_connection
-from module import combine_query
+from modal import get_connection
+from modal import combine_query
 
 # C
 @get_connection.get_connection

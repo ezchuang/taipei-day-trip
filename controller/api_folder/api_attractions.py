@@ -1,7 +1,6 @@
 from flask import ( Blueprint, request, jsonify)
 
-import module.operate_db as operate_db
-from controller import qry_para_set
+from modal.modal_folder import modal_attractions
 
 
 blueprint_attractions = Blueprint('blueprint_attractions', __name__, url_prefix ="/api")
@@ -18,8 +17,8 @@ def attractions_list():
         if page == None:
             raise ValueError
 
-        command_paras = qry_para_set.attractions_list(page, keyword)
-        data = operate_db.query_fetch_all(command_paras)
+        data = modal_attractions.attractions_list(page, keyword)
+
         # 跟 DB 要 13 筆資料，若資料數小於等於 12，則此輪為最後一輪
         if len(data) <= 12:
             page = None
@@ -60,8 +59,8 @@ def attractions_list():
 @blueprint_attractions.route("/attraction/<int:attractionId>", methods=["GET"])
 def attractions_one(attractionId):
     try:
-        command_paras = qry_para_set.attractions_one(attractionId)
-        data = operate_db.query_fetch_one(command_paras)
+        data = modal_attractions.attractions_one(attractionId)
+
         data["images"] = data["images"].split(",")
         res = {
             "data" : data
@@ -91,8 +90,8 @@ def attractions_one(attractionId):
 @blueprint_attractions.route("/mrts", methods=["GET"])
 def mrts_list():
     try:
-        command_paras = qry_para_set.mrts_list()
-        data = operate_db.query_fetch_all(command_paras)
+        data = modal_attractions.mrts_list()
+        
         for index in range(len(data)):
             data[index] = data[index]["mrt"]
         res = {

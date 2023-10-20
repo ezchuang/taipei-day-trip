@@ -1,8 +1,7 @@
 from flask import ( Blueprint, request, jsonify, redirect)
 
-from module import token
-import module.operate_db as operate_db
-from controller import qry_para_set
+from modal import token
+from modal.modal_folder import modal_booking
 
 
 blueprint_booking = Blueprint('blueprint_booking', __name__, url_prefix ="/api")
@@ -24,8 +23,8 @@ def booking(user_info, http_code):
     # 取得尚未下單的預定行程
     if request.method == "GET":
         try:
-            command_paras = qry_para_set.booking_get(user_info["id"])
-            data = operate_db.query_fetch_all(command_paras)
+            data = modal_booking.booking_get(user_info["id"])
+
             # 上面挑戰減少 access DB 次數，下面要重新組裝
             for index in range(len(data)):
                 data[index] = {
@@ -61,8 +60,9 @@ def booking(user_info, http_code):
 
         try:
             input_data["attractionId"]
-            command_paras = qry_para_set.booking_post(user_info["id"], input_data)
-            data = operate_db.query_create(command_paras)
+
+            data = modal_booking.booking_post(user_info["id"], input_data)
+
             res = {"ok" : True}
             return jsonify(res), 200
         
@@ -79,8 +79,8 @@ def booking(user_info, http_code):
     elif request.method == "DELETE":
         input_data = request.get_json()
         try:
-            command_paras = qry_para_set.booking_del(user_info["id"], input_data)
-            data = operate_db.query_del(command_paras)
+            data = modal_booking.booking_del(user_info["id"], input_data)
+
             res = {
                 "ok" : True,
             }

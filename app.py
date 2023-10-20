@@ -4,7 +4,7 @@ from controller.api_folder.api_user import blueprint_user
 from controller.api_folder.api_attractions import blueprint_attractions
 from controller.api_folder.api_booking import blueprint_booking
 from controller.api_folder.api_orders import blueprint_orders
-from module import get_connection
+from modal import get_connection
 
 app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False

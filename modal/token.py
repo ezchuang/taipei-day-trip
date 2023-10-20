@@ -3,8 +3,8 @@ from functools import wraps
 
 import jwt
 from controller.api_folder.api_user import secret_key
-import module.operate_db as operate_db
-from controller import qry_para_set
+import modal.operate_db as operate_db
+from modal.modal_folder import qry_para_set
 
 
 def token_required(func):
