@@ -35,7 +35,6 @@ def access_db():
             "username": os.getenv("DB_USERNAME"),
             "password": os.getenv("DB_PASSWORD"),
         }
-        print(db_config)
         return create_pool(db_config)
     except mysql.connector.errors.ProgrammingError as err:
         if err.errno != 1045:

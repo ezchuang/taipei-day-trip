@@ -70,7 +70,6 @@ def signin():
             token = authorization.token 
             # JWT Module會自動驗證過期時間
             decoded_data = jwt.decode(token, secret_key, algorithms="HS256")
-            print(decoded_data)
             command_paras = qry_para_set.verify(decoded_data)
             data = operate_db.query_fetch_one(command_paras)
 
