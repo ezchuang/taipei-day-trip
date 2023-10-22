@@ -10,7 +10,10 @@ blueprint_attractions = Blueprint('blueprint_attractions', __name__, url_prefix 
 @blueprint_attractions.route("/attractions", methods=["GET"])
 def attractions_list():
     try:
-        page = int(request.args.get("page"))
+        try:
+            page = int(request.args.get("page"))
+        except:
+            raise ValueError
         keyword = request.args.get("keyword")
         
         # 防止使用者亂搞

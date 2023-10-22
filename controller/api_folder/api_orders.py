@@ -25,7 +25,6 @@ def orders_get_all(user_info, http_code):
     if "error" in user_info:
         if http_code == 403:
             res = user_info
-            return redirect("/")
         return jsonify(res), http_code
 
     # 取得所有 order info
@@ -57,7 +56,6 @@ def orders_post(user_info, http_code):
     if "error" in user_info:
         if http_code == 403:
             res = user_info
-            return redirect("/")
         return jsonify(res), http_code
 
     # 建立訂單 & 付款
@@ -166,7 +164,6 @@ def orders_get(user_info, http_code, order_id=None):
     if "error" in user_info:
         if http_code == 403:
             res = user_info
-            return redirect("/")
         return jsonify(res), http_code
 
     # 依據 order id 取得 order info

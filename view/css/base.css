@@ -145,6 +145,11 @@ hr{
         padding: 5px;
     }
 }
+@media(max-width: 400px){
+    .forNavigation{
+        padding: 2px;
+    }
+}
 
 /* Sign in / Sign out */
 .formOuterFrame{
