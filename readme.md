@@ -53,7 +53,7 @@
       - DATABASE
   2. partner_key.env 放在 root，內含以下項目:
       - PARTNER_KEY
-  3. init_db_infos.env 放在 root/data/db_init_program/sub_functions/module_data，內含以下項目:
+  3. init_db_infos.env 放在 root/data/db_init_program/sub_functions/model_data，內含以下項目:
       - HOST
       - DB_USERNAME
       - DB_PASSWORD
