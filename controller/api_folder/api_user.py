@@ -1,17 +1,14 @@
 from flask import ( Blueprint, request, jsonify)
 from datetime import datetime, timedelta
-# import random, string
 import jwt
 
-import module.flask_modules as flask_modules
-from controller import qry_para_set
+from model.model_folder import model_user
 
 
 blueprint_user = Blueprint('blueprint_user', __name__, url_prefix ="/api")
 
 
 secret_key = "oQAQByzarbxzNYSvuP3V4sdZyfKqxeHq"
-# secret_key = "".join(random.choice(string.ascii_letters + string.digits) for i in range(32))
 
 
 # 會員註冊
@@ -25,8 +22,8 @@ def signup():
             not input_data.get("password"):
             raise ValueError
         
-        command_paras = qry_para_set.signup(input_data)
-        if not flask_modules.query_create(command_paras):
+        data = model_user.signup(input_data)
+        if not data:
             raise ValueError
         res = {
             "ok" : True
@@ -72,8 +69,8 @@ def signin():
             token = authorization.token 
             # JWT Module會自動驗證過期時間
             decoded_data = jwt.decode(token, secret_key, algorithms="HS256")
-            command_paras = qry_para_set.verify(decoded_data)
-            data = flask_modules.query_fetch_one(command_paras)
+
+            data = model_user.verify(decoded_data)
 
             if not data:
                 raise ValueError
@@ -96,9 +93,10 @@ def signin():
                 "@" not in input_data["email"] or \
                 not input_data.get("password"):
                 raise ValueError
+            
             email = input_data.get("email")
-            command_paras = qry_para_set.signin(email)
-            data = flask_modules.query_fetch_one(command_paras)
+            data = model_user.signin(email)
+
             if not data or input_data.get("password") != data.get("password"):
                 raise ValueError
             payload = {

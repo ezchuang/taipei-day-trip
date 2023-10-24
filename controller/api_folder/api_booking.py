@@ -1,11 +1,7 @@
 from flask import ( Blueprint, request, jsonify, redirect)
-# from functools import wraps
-# from datetime import datetime, timedelta
 
-from module import token
-from .api_user import secret_key
-import module.flask_modules as flask_modules
-from controller import qry_para_set
+from model import token
+from model.model_folder import model_booking
 
 
 blueprint_booking = Blueprint('blueprint_booking', __name__, url_prefix ="/api")
@@ -27,8 +23,8 @@ def booking(user_info, http_code):
     # 取得尚未下單的預定行程
     if request.method == "GET":
         try:
-            command_paras = qry_para_set.booking_get(user_info["id"])
-            data = flask_modules.query_fetch_all(command_paras)
+            data = model_booking.booking_get(user_info["id"])
+
             # 上面挑戰減少 access DB 次數，下面要重新組裝
             for index in range(len(data)):
                 data[index] = {
@@ -64,8 +60,9 @@ def booking(user_info, http_code):
 
         try:
             input_data["attractionId"]
-            command_paras = qry_para_set.booking_post(user_info["id"], input_data)
-            data = flask_modules.query_create(command_paras)
+
+            data = model_booking.booking_post(user_info["id"], input_data)
+
             res = {"ok" : True}
             return jsonify(res), 200
         
@@ -82,8 +79,8 @@ def booking(user_info, http_code):
     elif request.method == "DELETE":
         input_data = request.get_json()
         try:
-            command_paras = qry_para_set.booking_del(user_info["id"], input_data)
-            data = flask_modules.query_del(command_paras)
+            data = model_booking.booking_del(user_info["id"], input_data)
+
             res = {
                 "ok" : True,
             }

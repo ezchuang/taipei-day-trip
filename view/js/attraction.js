@@ -1,9 +1,9 @@
 // 宣告全域變數
-let currentId = null // 目前頁面景點編號
-let currentImgNum = null // 目前圖片編號
-let imgAmount = null // 共幾張圖
-let switchingFlag = false // 是否切換中 <- 為什麼加了這個就異常?
+let currentId // 目前頁面景點編號
+let currentImgNum // 目前圖片編號
+let imgAmount // 共幾張圖
 let imageArr = [] // image array 儲存image 網址
+let flag = false // 圖片是否切換中
 
 
 // 抓網址 ID
@@ -27,9 +27,108 @@ function switchButton(){
 }
 
 
-function changePlaceholderOfDate(){
-    let placeholder = document.querySelector(".bookingDateInput")
-    placeholder.setAttribute("placeholder", "yyyy/mm/dd")
+function relocate(){
+    let windowWidth = imgInsertTarget.offsetWidth
+    for (let i = 0; i < imgAmount; i++){
+        imageArr[i].style.zIndex = "-1"
+        imageArr[i].style.transform = `translate3D(${ (i - currentImgNum) * windowWidth }px, 0px, 0px)`
+        imageArr[i].style.transition = "all 0s ease-in-out"
+    }
+    if (currentImgNum === imgAmount - 1){
+        imageArr[currentImgNum].style.zIndex = "auto"
+        imageArr[0].style.transform = `translate3D(${ 1 * windowWidth }px, 0px, 0px)`
+    }else if (currentImgNum === 0){
+        imageArr[currentImgNum].style.zIndex = "auto"
+        imageArr[imgAmount-1].style.transform = `translate3D(${ -1 * windowWidth }px, 0px, 0px)`
+    }
+}
+
+
+function presetImgStyle(){
+    for (let i = 0; i < imgAmount; i++){
+        imageArr[i].style.display = "block" 
+        imageArr[i].style.zIndex = "auto"
+        imageArr[i].style.transition = "all 0.6s ease-in-out"
+    }
+}
+
+
+async function preRelocation(){
+    relocate()
+    await sleep(20)
+    presetImgStyle()
+}
+
+
+function resetImgStyle(){
+    for (let i = 0; i < imgAmount; i++){
+        imageArr[i].style.display = "none"
+        imageArr[i].style.transition = "all 0.6s ease-in-out"
+    }
+    imageArr[currentImgNum].style.display = "block"
+}
+
+
+async function mainSwitchImg(shiftNum, targetImgNum){
+    if (shiftNum === 0){
+        return 
+    }
+
+    let windowWidth = imgInsertTarget.offsetWidth
+    if ((shiftNum < 0 && targetImgNum < 0) ||
+        (shiftNum === imgAmount-1 && targetImgNum === imgAmount-1) ){ // 左移邊界
+        imageArr[imgAmount-1].style.transform = `translate3D(${ 0 * windowWidth }px, 0px, 0px)`
+        imageArr[0].style.transform = `translate3D(${ 1 * windowWidth }px, 0px, 0px)`
+        currentImgNum = (targetImgNum + imgAmount) % imgAmount
+        switchButton()
+        return 
+    }
+    if ((shiftNum > 0 && targetImgNum >= imgAmount) ||
+        (shiftNum === -(imgAmount-1) && targetImgNum === 0) ){ // 右移邊界
+        imageArr[0].style.transform = `translate3D(${ 0 * windowWidth }px, 0px, 0px)`
+        imageArr[imgAmount-1].style.transform = `translate3D(${ -1 * windowWidth }px, 0px, 0px)`
+        currentImgNum = (targetImgNum + imgAmount) % imgAmount
+        switchButton()
+        return 
+    }
+    if (shiftNum < 0){ // 左移
+        for (let i = 0; i < imgAmount; i++){
+            imageArr[i].style.transform = `translate3D(${ (i - targetImgNum) * windowWidth }px, 0px, 0px)`
+        }
+        imageArr[0].style.zIndex = "-1"
+        for (let i = 0; i < Math.abs(shiftNum); i++){
+            currentImgNum--
+            switchButton()
+            await sleep(40)
+        }
+        return 
+    }
+    // 右移
+    for (let i = 0; i < imgAmount; i++){
+        imageArr[i].style.transform = `translate3D(${ (i - targetImgNum) * windowWidth }px, 0px, 0px)`
+    }
+    imageArr[imgAmount-1].style.zIndex = "-1"
+    for (let i = 0; i < Math.abs(shiftNum); i++){
+        currentImgNum++
+        switchButton()
+        await sleep(40)
+    }
+}
+
+
+// 切換照片
+async function controlSwitchImg(targetImgNum){
+    if (flag ===true){
+        return
+    }
+    flag = true
+
+    await preRelocation()
+    await mainSwitchImg(targetImgNum - currentImgNum, targetImgNum)
+    await sleep(560)
+    resetImgStyle()
+
+    flag = false
 }
 
 
@@ -62,7 +161,7 @@ async function insertElement(currentId){
     imgAmount = data_target.images.length // 全域變數: 共幾張圖
 
     let imgInsertTarget = document.querySelector("#imgInsertTarget")
-    windowWidth = imgInsertTarget.offsetWidth
+    let windowWidth = imgInsertTarget.offsetWidth
 
     if (imgAmount < 2){ // 只有一張圖
         currentImgNum = 0
@@ -106,10 +205,19 @@ async function insertElement(currentId){
 
         // 全域變數
         imageArr.push(imgDiv)
-        
-        imgDiv.style.transform = `translate3D(${ i * windowWidth }px, 0px, 0px)`
+        imgDiv.style.display = "none"
+        if (i < 1){
+            imgDiv.style.zIndex = "auto"
+            imgDiv.style.display = "block"
+            imgDiv.style.transform = `translate3D(${ i * windowWidth }px, 0px, 0px)`
+        }else if (i === imgAmount - 1){
+            imgDiv.style.zIndex = "auto"
+            imageArr[i].style.transform = `translate3D(${ -1 * windowWidth }px, 0px, 0px)`
+        }else{
+            imgDiv.style.zIndex = "-1"
+            imgDiv.style.transform = `translate3D(${ i * windowWidth }px, 0px, 0px)`
+        }
     }
-    imageArr[imgAmount-1].style.transform = `translate3D(${ -1 * windowWidth }px, 0px, 0px)`
     
     for (let i = 0; i < imgAmount; i++){
         // 插入小圓點
@@ -118,40 +226,21 @@ async function insertElement(currentId){
         imgPositionCircleButton.appendChild(imgButton)
         imgButton.classList.add("imgButtonWhite")
         imgButton.setAttribute("id", `imgButton${String(i)}`)
+        imgButton.addEventListener("click", () => {
+            controlSwitchImg(i)
+        })
     }
     switchButton()
-}
-
-
-// 圖片移動動畫 與 圖片切換
-async function moveImg(next){
-    if (next === "right"){
-        imageArr.push(imageArr.shift())
-        for (let i = 0; i < imgAmount; i++){
-            imageArr[i].style.transform = `translate3D(${ i * windowWidth }px, 0px, 0px)`
-        }
-        imageArr[imgAmount-1].style.transform = `translate3D(${ -1 * windowWidth }px, 0px, 0px)`
-        currentImgNum = Number(imageArr[0].firstChild.id.slice(3))
-        return
-    }
-    imageArr.unshift(imageArr.pop())
-    for (let i = 0; i < imgAmount; i++){
-        imageArr[i].style.transform = `translate3D(${ i * windowWidth }px, 0px, 0px)`
-    }
-    imageArr[imgAmount-1].style.transform = `translate3D(${ -1 * windowWidth }px, 0px, 0px)`
-    currentImgNum = Number(imageArr[0].firstChild.id.slice(3))
 }
 
 
 // MrtList 左鍵行為
 async function arrowLeft(){
-    await moveImg("left") // 行為是右移
-    switchButton()
+    await controlSwitchImg(currentImgNum - 1)
 }
 // MrtList 右鍵行為
 async function arrowRight(){
-    await moveImg("right") // 行為是左移
-    switchButton()
+    await controlSwitchImg(currentImgNum + 1)
 }
 
 
@@ -231,7 +320,6 @@ function showPrice(){
 document.addEventListener("DOMContentLoaded", () => {
     currentId = getID()
     insertElement(currentId)
-    changePlaceholderOfDate()
 })
 document.querySelector("#arrowLeft").addEventListener("click", arrowLeft)
 document.querySelector("#arrowRight").addEventListener("click", arrowRight)

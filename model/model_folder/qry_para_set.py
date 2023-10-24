@@ -247,6 +247,23 @@ def orders_get(user_id, order_id):
     return command_paras
 
 
+def orders_get_all(user_id):
+    command_paras = {
+        "columns" : "orders.order_id as number, \
+            orders.price as price, \
+            orders.name as name, \
+            orders.order_status as status",
+        "table" : "orders",
+        "where" : "orders.auth_id = %s",
+        "group_by" : None,
+        "order_by" : "orders.order_id",
+        "order_ordered" : "ASC",
+        "limit" : None,
+        "target" : (user_id,)
+    }
+    return command_paras
+
+
 """
 OK 形式:
 

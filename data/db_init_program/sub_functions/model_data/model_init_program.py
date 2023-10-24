@@ -1,4 +1,4 @@
-from sub_functions.module_data import get_connect
+from sub_functions.model_data import get_connect
 """
 記得加上 Try error
 execute() 有可能發生錯誤
@@ -91,7 +91,7 @@ def combine_create_query(paras:dict) -> str:
     return res
 
 
-# 決定 create DB 還是 Table <- 調整到 Query String Module
+# 決定 create DB 還是 Table <- 調整到 Query String model
 def combine_query_controller(func_name:str, paras:dict) -> str:
     if func_name == "create_table":
         return combine_table_query(paras)

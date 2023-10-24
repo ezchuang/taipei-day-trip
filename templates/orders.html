@@ -3,19 +3,19 @@
 {% block title %}thankyou{% endblock %}
 
 {% block css %}
-<link rel="stylesheet" type="text/css" href="/static/css/thankyou.css"/>
+<link rel="stylesheet" type="text/css" href="/static/css/orders.css"/>
 {% endblock %}
 
 {% block content %}
 <div class="frame">
     <div class="titleName button bold" id="titleName"></div>
-    <div class="titleOrderId button bold" id="titleOrderId"></div>
-    <div class="emptyMsg medium">查無該訂單</div>
+    <!-- <div class="titleOrderId button bold" id="titleOrderId"></div> -->
+    <div class="emptyMsg medium">目前無訂單</div>
     <div class="innerFrame">
         <div class="attractionFrame">
         </div>
-        <hr/>
-        <div class="userFrame">
+        <!-- <hr/> -->
+        <!-- <div class="userFrame">
             <div class="userTitle button bold">您的聯絡資訊</div>
             <div class="userName">
                 <label class="userNameLabel medium">聯絡姓名：</label>
@@ -29,18 +29,18 @@
                 <label class="userNumberLabel medium">手機號碼：</label>
                 <div class="userNumberCnt medium"></div>
             </div>
-        </div>
-        <hr/>
-        <div class="checkFrame">
+        </div> -->
+        <!-- <hr/> -->
+        <!-- <div class="checkFrame">
             <div class="checkPrice bold">
                 <div class="checkPriceLabel">總價：</div>
                 <div class="checkPriceCnt"></div>
             </div>
-        </div>
+        </div> -->
     </div>
 </div>
 {% endblock %}
 
 {% block script %}
-<script src="/static/js/thankyou.js"></script>
+<script src="/static/js/orders.js"></script>
 {% endblock %}

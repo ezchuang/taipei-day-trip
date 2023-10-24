@@ -15,7 +15,7 @@ function sleep(time){
 
 // del cookie
 function delCookie(key) {
-    var date = new Date();
+    let date = new Date();
     date.setTime(date.getTime() - 1000);
     document.cookie = `${key}='';expires=${date.toGMTString()}`;
 }
@@ -32,7 +32,7 @@ function signinJudge(success){
         return
     }
     verified = true
-    inpPageBtn.textContent = `登出系統`
+    inpPageBtn.textContent = `登出帳號`
     inpPageBtn.removeEventListener("click", createSignin)
     inpPageBtn.addEventListener("click", logout)
 }
@@ -53,7 +53,6 @@ function createSignin(){
     let formOuterFrame = document.createElement("div")
     body.appendChild(formOuterFrame)
 
-    
     let relativeFrame = document.createElement("div")
     let formMask = document.createElement("div")
     let formStyle = document.createElement("div")
@@ -118,7 +117,6 @@ function createSignin(){
     switchBtnText.classList.add("switchBtnText")
     signinPageSwitchBtn.classList.add("signinPageSwitchBtn")
     signinPageSwitchBtn.classList.add("pointer")
-
 
     // 插入內容、id
     let titleText = document.createTextNode("登入會員帳號")
@@ -221,6 +219,13 @@ function logout(){
 }
 
 
+// 訂單頁轉跳
+function orders(){
+    url = "/orders"
+    linkToUrl(url)
+}
+
+
 // 註冊
 async function signup(){
     let formInnerFrame = document.querySelector(".formInnerFrame")
@@ -319,6 +324,7 @@ async function verifyUser(){
     })
     userData = await userData.json()
     if (! userData.data){
+        localStorage.removeItem('token');
         signinJudge(false)
         return false
     }
@@ -350,8 +356,18 @@ function fetchPackager({
 
 // 監聽事件
 document.addEventListener("DOMContentLoaded", async () => {
+    // 讓換面轉跳留給 JS function 控制
+    var links = document.querySelectorAll("a");
+    for (var i = 0; i < links.length; i++) {
+        links[i].addEventListener("click", function(event) {
+            event.preventDefault();
+        });
+    }
+
+    // 驗證是否登入
     await verifyUser()
 })
+
 document.querySelector("#bookingPageBtn").addEventListener("click", () => {
     if (! verified){
         createSignin()

@@ -1,21 +1,17 @@
 from flask import *
 
-from api_folder.api_user import blueprint_user
-from api_folder.api_attractions import blueprint_attractions
-from api_folder.api_booking import blueprint_booking
-from api_folder.api_orders import blueprint_orders
-from module import get_connection
+from controller.api_folder.api_user import blueprint_user
+from controller.api_folder.api_attractions import blueprint_attractions
+from controller.api_folder.api_booking import blueprint_booking
+from controller.api_folder.api_orders import blueprint_orders
+from model import get_connection
 
 app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
-app.static_folder="app_folder"
+app.static_folder="view"
 
-# secret_key = random.randint(1000000000, 9999999999)
 app.json.ensure_ascii = False
-
-# from flask_cors import CORS
-# CORS(app)
 
 app.config['connection_pool'] = get_connection.access_db()
 app.register_blueprint(blueprint_user)
@@ -37,8 +33,10 @@ def booking():
 @app.route("/thankyou")
 def thankyou():
 	return render_template("thankyou.html")
+@app.route("/orders")
+def orders():
+	return render_template("orders.html")
 
 
 app.config["DEBUG"] = True
-# app.run(port=3000)
 app.run(host="0.0.0.0", port=3000)

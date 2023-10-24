@@ -21,7 +21,7 @@
 @media(max-width: 800px){
     .main{
         width: 100%;
-    }
+    }   
 }
 .section{
     display: flex;
@@ -58,9 +58,8 @@
     width: 100%;
     border-radius: 5px;
     border: 0px;
-    /* transition: transform 1s ease-in-out; */
-    transition: all 0.6s cubic-bezier(0.39, 0.575, 0.565, 1);
-    position:absolute;
+    transition: all 0.6s ease-in-out;
+    position: absolute;
 }
 .imgTarget{
     height: 100%;
@@ -134,7 +133,6 @@
     gap: 12px;
     height: 14px;
     margin-bottom: 10px;
-    /* z-index: 5; */
 }
 .imgButtonBlack{
     border-radius: 50%;
@@ -142,6 +140,7 @@
     background-color: black;
     height: 12px;
     width: 12px;
+    cursor: pointer;
 }
 .imgButtonWhite{
     border-radius: 50%;
@@ -149,6 +148,7 @@
     background-color: white;
     height: 12px;
     width: 12px;
+    cursor: pointer;
 }
 .profile{
     margin: 15px;

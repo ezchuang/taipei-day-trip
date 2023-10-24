@@ -1,14 +1,11 @@
-from flask import ( Blueprint, request, jsonify, redirect, current_app)
-# from functools import wraps
+from flask import ( Blueprint, request, jsonify, redirect)
 from datetime import datetime
 import requests
 from dotenv import load_dotenv
 import os
 
-from module import token
-from .api_user import secret_key
-import module.flask_modules as flask_modules
-from controller import qry_para_set
+from model import token
+from model.model_folder import model_orders
 
 
 blueprint_orders = Blueprint('blueprint_orders', __name__, url_prefix ="/api")
@@ -16,6 +13,38 @@ blueprint_orders = Blueprint('blueprint_orders', __name__, url_prefix ="/api")
 dotenv_path = 'partner_key.env'
 load_dotenv(dotenv_path)
 partner_key = os.getenv("PARTNER_KEY")
+
+
+# 取得所有已下訂行程
+@blueprint_orders.route("/orders", methods=["GET"])
+@token.token_required
+def orders_get_all(user_info, http_code):
+    res = {}
+
+    # 驗證失敗
+    if "error" in user_info:
+        if http_code == 403:
+            res = user_info
+        return jsonify(res), http_code
+
+    # 取得所有 order info
+    try:
+        data = model_orders.orders_get_all(user_info["id"])
+
+        res = {
+            "data": data,
+        }
+        http_code = 200
+        return jsonify(res), http_code
+    
+    except Exception as err:
+        print(err)
+        res = {
+            "data": None,
+        }
+        http_code = 200
+        return jsonify(res), http_code
+
 
 # 下訂行程
 @blueprint_orders.route("/orders", methods=["POST"])
@@ -27,7 +56,6 @@ def orders_post(user_info, http_code):
     if "error" in user_info:
         if http_code == 403:
             res = user_info
-            return redirect("/")
         return jsonify(res), http_code
 
     # 建立訂單 & 付款
@@ -38,8 +66,8 @@ def orders_post(user_info, http_code):
         trip = input_data["order"]["trip"]
 
         # 檢查輸入資訊
-        command_paras = qry_para_set.booking_get_for_order(user_info["id"])
-        db_data = flask_modules.query_fetch_all(command_paras)
+        db_data = model_orders.booking_get_for_order(user_info["id"])
+
         for i in range(len(db_data)):
             total_price -= db_data[i]["price"]
             if total_price < 0:
@@ -62,15 +90,15 @@ def orders_post(user_info, http_code):
         # order_id = date_today_str + ("%06d" % current_app.config["order_sequence"])
 
         # 寫入 orders
-        command_paras = qry_para_set.orders_post_orders(order_id, user_info["id"], input_data)
-        sql_res = flask_modules.query_create(command_paras)
+        sql_res = model_orders.orders_post_orders(order_id, user_info["id"], input_data)
+
         if not sql_res:
             raise ValueError("failed to create order")
         
         # 寫入 orders detail
         for db_data_sep in db_data:
-            command_paras = qry_para_set.orders_post_orders_detail(order_id, db_data_sep)
-            sql_res = flask_modules.query_create(command_paras)
+            sql_res = model_orders.orders_post_orders_detail(order_id, db_data_sep)
+
             if not sql_res:
                 raise ValueError("failed to create order")
         
@@ -99,12 +127,10 @@ def orders_post(user_info, http_code):
             raise ValueError("訂單建立失敗")
 
         # 刪除暫存之預定資料
-        command_paras = qry_para_set.orders_set_delete_booking(user_info["id"])
-        db_data = flask_modules.query_del(command_paras)
+        db_data = model_orders.orders_set_delete_booking(user_info["id"])
 
         # 更新訂單狀態
-        command_paras = qry_para_set.orders_set_update_orders(order_id)
-        db_data = flask_modules.query_update(command_paras)
+        db_data = model_orders.orders_set_update_orders(order_id)
 
         res = {
             "data" : {
@@ -122,8 +148,8 @@ def orders_post(user_info, http_code):
         print("ERROR: ", err)
         msg = "訂單建立失敗，輸入不正確或其他原因"
         res = {
-            "error" : True,
-            "message" : msg,
+            "error": True,
+            "message": msg,
         }
         return jsonify(res), 400
 
@@ -138,13 +164,12 @@ def orders_get(user_info, http_code, order_id=None):
     if "error" in user_info:
         if http_code == 403:
             res = user_info
-            return redirect("/")
         return jsonify(res), http_code
 
     # 依據 order id 取得 order info
     try:
-        command_paras = qry_para_set.orders_get(user_info["id"], order_id)
-        data = flask_modules.query_fetch_all(command_paras)
+        data = model_orders.orders_get(user_info["id"], order_id)
+
         # 上面挑戰減少 access DB 次數，下面要重新組裝
         price = data[0]["price"]
         name = data[0]["name"]
@@ -182,8 +207,7 @@ def orders_get(user_info, http_code, order_id=None):
     except Exception as err:
         print(err)
         res = {
-            "data" : None,
+            "data": None,
         }
         http_code = 200
         return jsonify(res), http_code
-
