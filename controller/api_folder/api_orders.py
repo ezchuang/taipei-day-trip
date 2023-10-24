@@ -4,8 +4,8 @@ import requests
 from dotenv import load_dotenv
 import os
 
-from modal import token
-from modal.modal_folder import modal_orders
+from model import token
+from model.model_folder import model_orders
 
 
 blueprint_orders = Blueprint('blueprint_orders', __name__, url_prefix ="/api")
@@ -29,7 +29,7 @@ def orders_get_all(user_info, http_code):
 
     # 取得所有 order info
     try:
-        data = modal_orders.orders_get_all(user_info["id"])
+        data = model_orders.orders_get_all(user_info["id"])
 
         res = {
             "data": data,
@@ -66,7 +66,7 @@ def orders_post(user_info, http_code):
         trip = input_data["order"]["trip"]
 
         # 檢查輸入資訊
-        db_data = modal_orders.booking_get_for_order(user_info["id"])
+        db_data = model_orders.booking_get_for_order(user_info["id"])
 
         for i in range(len(db_data)):
             total_price -= db_data[i]["price"]
@@ -90,14 +90,14 @@ def orders_post(user_info, http_code):
         # order_id = date_today_str + ("%06d" % current_app.config["order_sequence"])
 
         # 寫入 orders
-        sql_res = modal_orders.orders_post_orders(order_id, user_info["id"], input_data)
+        sql_res = model_orders.orders_post_orders(order_id, user_info["id"], input_data)
 
         if not sql_res:
             raise ValueError("failed to create order")
         
         # 寫入 orders detail
         for db_data_sep in db_data:
-            sql_res = modal_orders.orders_post_orders_detail(order_id, db_data_sep)
+            sql_res = model_orders.orders_post_orders_detail(order_id, db_data_sep)
 
             if not sql_res:
                 raise ValueError("failed to create order")
@@ -127,10 +127,10 @@ def orders_post(user_info, http_code):
             raise ValueError("訂單建立失敗")
 
         # 刪除暫存之預定資料
-        db_data = modal_orders.orders_set_delete_booking(user_info["id"])
+        db_data = model_orders.orders_set_delete_booking(user_info["id"])
 
         # 更新訂單狀態
-        db_data = modal_orders.orders_set_update_orders(order_id)
+        db_data = model_orders.orders_set_update_orders(order_id)
 
         res = {
             "data" : {
@@ -168,7 +168,7 @@ def orders_get(user_info, http_code, order_id=None):
 
     # 依據 order id 取得 order info
     try:
-        data = modal_orders.orders_get(user_info["id"], order_id)
+        data = model_orders.orders_get(user_info["id"], order_id)
 
         # 上面挑戰減少 access DB 次數，下面要重新組裝
         price = data[0]["price"]

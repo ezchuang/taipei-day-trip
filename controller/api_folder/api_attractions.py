@@ -1,6 +1,6 @@
 from flask import ( Blueprint, request, jsonify)
 
-from modal.modal_folder import modal_attractions
+from model.model_folder import model_attractions
 
 
 blueprint_attractions = Blueprint('blueprint_attractions', __name__, url_prefix ="/api")
@@ -20,7 +20,7 @@ def attractions_list():
         if page == None:
             raise ValueError
 
-        data = modal_attractions.attractions_list(page, keyword)
+        data = model_attractions.attractions_list(page, keyword)
 
         # 跟 DB 要 13 筆資料，若資料數小於等於 12，則此輪為最後一輪
         if len(data) <= 12:
@@ -62,7 +62,7 @@ def attractions_list():
 @blueprint_attractions.route("/attraction/<int:attractionId>", methods=["GET"])
 def attractions_one(attractionId):
     try:
-        data = modal_attractions.attractions_one(attractionId)
+        data = model_attractions.attractions_one(attractionId)
 
         data["images"] = data["images"].split(",")
         res = {
@@ -93,7 +93,7 @@ def attractions_one(attractionId):
 @blueprint_attractions.route("/mrts", methods=["GET"])
 def mrts_list():
     try:
-        data = modal_attractions.mrts_list()
+        data = model_attractions.mrts_list()
         
         for index in range(len(data)):
             data[index] = data[index]["mrt"]

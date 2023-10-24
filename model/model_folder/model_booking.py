@@ -1,5 +1,5 @@
-import modal.operate_db as operate_db
-from modal.modal_folder import qry_para_set
+import model.operate_db as operate_db
+from model.model_folder import qry_para_set
 
 
 def booking_get(user_id):

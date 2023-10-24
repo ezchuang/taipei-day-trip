@@ -1,7 +1,7 @@
 import json
 
-from sub_functions.module_data import get_connect
-from sub_functions.module_data import module_init_program
+from sub_functions.model_data import get_connect
+from sub_functions.model_data import model_init_program
 from sub_functions import qry_para_set_data_washer
 
 
@@ -36,7 +36,7 @@ def assort_data(db_connection_pool, data) -> None:
         for data in data_arr:
             temp_value = "%s," * (len(data["target"]))
             data["values"] = temp_value[:-1]
-            module_init_program.insert_data(db_connection_pool, data)
+            model_init_program.insert_data(db_connection_pool, data)
         
 
 def main():

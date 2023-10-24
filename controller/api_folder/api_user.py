@@ -2,7 +2,7 @@ from flask import ( Blueprint, request, jsonify)
 from datetime import datetime, timedelta
 import jwt
 
-from modal.modal_folder import modal_user
+from model.model_folder import model_user
 
 
 blueprint_user = Blueprint('blueprint_user', __name__, url_prefix ="/api")
@@ -22,7 +22,7 @@ def signup():
             not input_data.get("password"):
             raise ValueError
         
-        data = modal_user.signup(input_data)
+        data = model_user.signup(input_data)
         if not data:
             raise ValueError
         res = {
@@ -70,7 +70,7 @@ def signin():
             # JWT Module會自動驗證過期時間
             decoded_data = jwt.decode(token, secret_key, algorithms="HS256")
 
-            data = modal_user.verify(decoded_data)
+            data = model_user.verify(decoded_data)
 
             if not data:
                 raise ValueError
@@ -95,7 +95,7 @@ def signin():
                 raise ValueError
             
             email = input_data.get("email")
-            data = modal_user.signin(email)
+            data = model_user.signin(email)
 
             if not data or input_data.get("password") != data.get("password"):
                 raise ValueError
