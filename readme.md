@@ -28,7 +28,7 @@
 
 ![Structure](./readme_images/taipei_day_trip_structure.png)
 
-# 特色:
+# 特色
 
 此為 Camp 的共同作業，我的特色如下
 
@@ -41,7 +41,7 @@
 3. 不使用框架完成圖片輪轉動畫
    ![image slider](./readme_images/taipei_day_trip1.gif)
 
-# 技術說明:
+## 技術說明
 
 1. 全站皆有 RWD。
 2. 後端使用 MVC，且盡量朝向 CSR 設計。
