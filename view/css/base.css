@@ -115,7 +115,7 @@ hr {
 }
 @media (max-width: 1200px) {
   .nevigation {
-    width: calc(100% - 10px);
+    width: calc(100% - 20px);
     margin: 0px 10px 0px 10px;
   }
 }
